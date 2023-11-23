@@ -8,12 +8,17 @@
 typedef struct s_block
 {
     char            *content;
+    int             content_len;
+    int             last_pos;
     struct s_block  *next;
 }                   t_block;
 
-size_t  line_len(size_t block_nbr, size_t last_buffer_len);
-t_block	read_block(int fd, t_block textblock, int *line_pos);
+// UTILS
+t_block *init_block();
+int     get_end_of_line(const char *str);
+void    content_move(t_block *block);
 
-int get_next_line(const int fd, char **line);
+// GNL
+char	*get_next_line(const int fd);
 
 #endif
