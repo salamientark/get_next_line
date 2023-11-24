@@ -6,11 +6,26 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/23 16:19:04 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:06:40 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+// Free_all the block and content from text_block to end of it
+void    free_all(t_block *text_block)
+{
+    t_block *tmp;
+
+    while (text_block)
+    {
+        tmp = text_block->next;
+        free(text_block->content);
+        free(text_block);
+        text_block = NULL;
+        text_block = tmp;
+    }
+}
 
 // Init an empty text_block
 //  Return :
@@ -58,16 +73,16 @@ int get_end_of_line(const char *str)
 //  Same as memmove then memeset \0 for the end of content
 //      Return :
 //          void
-void    content_move(t_block *block)
+void    content_move(t_block **block)
 {
     int index;
 
     index = 0;
-    while (index < block->last_pos)
+    while (index < (*block)->last_pos)
     {
-        block->content[index] = block->content[block->last_pos + index];
+        (*block)->content[index] = (*block)->content[(*block)->last_pos + index];
         index++;
     }
     while (index < BUFF_SIZE)
-        block->content[index++] = '\0';
+        (*block)->content[index++] = '\0';
 }
