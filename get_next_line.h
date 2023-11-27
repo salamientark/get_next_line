@@ -23,7 +23,7 @@ typedef struct s_block
 t_block *init_block();
 int     get_end_of_line(const char *str);
 void    content_move(t_block **block);
-void    free_all(t_block *text_block);
+void    free_all(t_block **text_block);
 
 // GNL
 char	*get_next_line(const int fd);

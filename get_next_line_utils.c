@@ -6,24 +6,25 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/27 13:58:20 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:25:38 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 // Free_all the block and content from text_block to end of it
-void    free_all(t_block *text_block)
+void    free_all(t_block **text_block)
 {
     t_block *tmp;
 
-    while (text_block)
+    while ((*text_block))
     {
-        tmp = text_block->next;
-        free(text_block->content);
-        free(text_block);
-        text_block = NULL;
-        text_block = tmp;
+        tmp = (*text_block)->next;
+        free((*text_block)->content);
+        (*text_block)->content = NULL;
+        free((*text_block));
+        (*text_block) = NULL;
+        (*text_block) = tmp;
     }
 }
 

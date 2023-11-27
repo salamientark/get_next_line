@@ -38,11 +38,10 @@ static int	read_line(const int fd, t_block **head)
 	//  	line_len += read_block(fd, head);
 	// else
 	// 	content_move(head);
-	if (*head)
+	if (*head && (*head)->content)
 		content_move(head);
 	line_len += read_block(fd, head);
-	while ((*head)->last_pos == -1 ||
-		((*head)->content_len == (*head)->last_pos))
+	while ((*head)->last_pos == -1 && (*head)->content_len == BUFF_SIZE)
 	{
 		tmp_block = init_block();
 		line_len += read_block(fd, &tmp_block);
@@ -99,11 +98,11 @@ char	*get_next_line(const int fd)
 		return (NULL);
 	line_len = read_line(fd, &head);
 	line = make_line(line_len, head);
-	if (!line)
-		free_all(head);
+	if (!line || head->content_len == 0)
+		free_all(&head);
 	else
 	{
-		free_all(head->next);
+		free_all(&(head->next));
 		head->next = NULL;
 	}
 	return (line);
