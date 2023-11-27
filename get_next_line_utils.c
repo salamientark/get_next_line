@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/27 11:09:32 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:28:01 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void    content_move(t_block **block)
         index++;
     }
     (*block)->content_len = BUFF_SIZE - index;
-    (*block)->last_pos = get_end_of_line((*block)->content);
     while (index < BUFF_SIZE)
         (*block)->content[index++] = '\0';
+    (*block)->last_pos = get_end_of_line((*block)->content);
 }

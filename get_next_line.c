@@ -32,10 +32,13 @@ static int	read_line(const int fd, t_block **head)
 	int		line_len;
 
 	line_len = 0;
-	if (!(*head))
-	 	line_len += read_block(fd, head);
-	else
+	// if (!(*head))
+	//  	line_len += read_block(fd, head);
+	// else
+	// 	content_move(head);
+	if (*head)
 		content_move(head);
+	line_len += read_block(fd, head);
 	while ((*head)->last_pos == -1 ||
 		((*head)->content_len == (*head)->last_pos))
 	{

@@ -19,6 +19,8 @@ int main()
     ft_printf("line 1: %s", line);
     line = get_next_line(fd);
     ft_printf("line 2: %s", line);
+    line = get_next_line(fd);
+    ft_printf("line 3: %s", line);
 
     close(fd);
     free(line);
