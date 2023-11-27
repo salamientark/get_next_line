@@ -1,6 +1,10 @@
 #include "get_next_line.h"
 #include "./ft_printf/ft_printf.h"
 
+// Read one text_block and put the result into block->content
+//	Return :
+//		[0;BUFF_SIZE[	: number of char read from file
+//			-1			: ERROR
 static int	read_block(const int fd, t_block **block)
 {
 	int	content_len;
@@ -13,9 +17,15 @@ static int	read_block(const int fd, t_block **block)
 		return (-1);
 	(*block)->content_len = content_len;
 	(*block)->last_pos = get_end_of_line((*block)->content);
+	if ((*block)->last_pos != -1)
+		return ((*block)->last_pos);
 	return (content_len);
 }
 
+// Read one line from file and make a chained list of blocks from it
+//	Return :
+//		[0;∞[	: number of char in line
+//		-1		: ERROR
 static int	read_line(const int fd, t_block **head)
 {
 	t_block	*tmp_block;
@@ -26,21 +36,21 @@ static int	read_line(const int fd, t_block **head)
 	 	line_len += read_block(fd, head);
 	else
 		content_move(head);
-	//while ((*head)->content_len == (*head)->last_pos)
-	// tmp_block = *head;
 	while ((*head)->last_pos == -1 ||
 		((*head)->content_len == (*head)->last_pos))
 	{
 		tmp_block = init_block();
 		line_len += read_block(fd, &tmp_block);
-		//*head = tmp_block;
-		//if (tmp_block->last_pos == -1)
 		tmp_block->next = *head;
 		*head = tmp_block;
 	}
 	return (line_len);
 }
 
+// Make a (char *)line from 'head' text_block list of length 'line_len'
+//	Return :
+//		(char *)	: New_line made
+//		NULL		: ERROR or no line to make
 static char	*make_line(int line_len, t_block *head)
 {
 	char	*line;
@@ -53,8 +63,8 @@ static char	*make_line(int line_len, t_block *head)
 	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
-	line[line_len--] = '\0';
-	buff_index = head->last_pos;
+	line[line_len] = '\0';
+	buff_index = head->last_pos - 1;
 	while (line_len-- > 0)
 	{
 		ft_printf("%c - %x\n", head->content[buff_index],

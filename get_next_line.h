@@ -5,6 +5,12 @@
 
 # define BUFF_SIZE 32
 
+
+// Chained list of text_blocks
+//  content     : text_content
+//  content_len : length of the content
+//  last_pos    : \n pos or EOF pos if as one
+//  next        : pointer to next block
 typedef struct s_block
 {
     char            *content;

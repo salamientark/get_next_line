@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/24 17:06:40 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/27 11:09:32 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void    free_all(t_block *text_block)
 t_block *init_block()
 {
     t_block *block;
+    int     index;
 
     block = (t_block *)malloc(sizeof(struct s_block));
     if (!block)
@@ -43,6 +44,9 @@ t_block *init_block()
         free(block);
         return (NULL);
     }
+    index = 0;
+    while (index < BUFF_SIZE)
+        block->content[index++] = '\0';
     block->content_len = 0;
     block->last_pos = 0;
     block->next = NULL;
@@ -61,7 +65,7 @@ int get_end_of_line(const char *str)
     while (str[index] && index < BUFF_SIZE)
     {
         if (str[index] == '\n')
-            return (index);
+            return (index + 1);
         index++;
     }
     return (-1);
@@ -78,11 +82,13 @@ void    content_move(t_block **block)
     int index;
 
     index = 0;
-    while (index < (*block)->last_pos)
+    while (index < (BUFF_SIZE - (*block)->last_pos))
     {
         (*block)->content[index] = (*block)->content[(*block)->last_pos + index];
         index++;
     }
+    (*block)->content_len = BUFF_SIZE - index;
+    (*block)->last_pos = get_end_of_line((*block)->content);
     while (index < BUFF_SIZE)
         (*block)->content[index++] = '\0';
 }

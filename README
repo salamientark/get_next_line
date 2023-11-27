@@ -1,5 +1,3 @@
 PROBLEMS:
-	during the line reading we are setting 'last_pos' which is for telling that
-	this char is and \n or EOF
-	But when we are making the line this last_pos is either 1 to big or one too small and this
-	doesn't work'
+	Cannot read multiple line
+	Invalid read of size 1 in (get_en_of_line)
