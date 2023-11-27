@@ -18,7 +18,7 @@ static int	read_block(const int fd, t_block **block)
 	if (content_len == -1)
 		return (-1);
 	(*block)->content_len = content_len;
-	(*block)->last_pos = get_end_of_line((*block)->content);
+	(*block)->last_pos = get_char_pos((*block)->content, '\n');
 	if ((*block)->last_pos != -1)
 		return ((*block)->last_pos);
 	return (content_len);

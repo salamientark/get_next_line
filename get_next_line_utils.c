@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/27 16:25:38 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:52:13 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,20 @@ t_block *init_block()
     return (block);
 }
 
+int get_char_pos(const char *str, int c)
+{
+    int index;
+
+    index = 0;
+    while (index < BUFF_SIZE)
+    {
+        if (str[index] == c)
+            return (index + 1);
+        index++;
+    }
+    return (-1);
+}
+
 // Check if str contain \n or if str is last line
 //  Return :
 //   -1     : Neither EOF or \n found
@@ -90,7 +104,10 @@ void    content_move(t_block **block)
     }
     // (*block)->content_len = BUFF_SIZE - index;
     (*block)->content_len = index;
+    // (*block)->content_len = get_char_pos((*block)->content, '\0');
+    // if ((*block)->content_len == -1)
+    //     (*block)->content_len = BUFF_SIZE;
     while (index < BUFF_SIZE)
         (*block)->content[index++] = '\0';
-    (*block)->last_pos = get_end_of_line((*block)->content);
+    (*block)->last_pos = get_char_pos((*block)->content, '\n');
 }

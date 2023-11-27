@@ -1,3 +1,2 @@
 PROBLEMS:
-	Bug when reading mutiple line
-	Invalid read of size 1 in (get_en_of_line) only the first time at the beginning
+	Trouble finding EOF and stoping
