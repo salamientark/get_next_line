@@ -1,2 +1,5 @@
 PROBLEMS:
-	Trouble finding EOF and stoping
+	Don't work with BUFF_SIZE =  0
+	Don't work with BUFF_SIZE > 50 (memory error)
+	Trouble compiling with and without -D flag
+

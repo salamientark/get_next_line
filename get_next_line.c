@@ -1,5 +1,4 @@
 #include "get_next_line.h"
-#include "./ft_printf/ft_printf.h"
 
 // Read one text_block and put the result into block->content
 //	Return :
