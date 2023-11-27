@@ -11,8 +11,10 @@ static int	read_block(const int fd, t_block **block)
 
 	if (!(*block))
 		(*block) = init_block();
-	content_len = read(fd, (*block)->content + (*block)->last_pos,
-		BUFF_SIZE - (*block)->last_pos);
+	// content_len = read(fd, (*block)->content + (*block)->last_pos,
+	// 	BUFF_SIZE - (*block)->last_pos);
+	content_len = read(fd, (*block)->content + (*block)->content_len,
+		BUFF_SIZE - (*block)->content_len);
 	if (content_len == -1)
 		return (-1);
 	(*block)->content_len = content_len;
@@ -70,8 +72,8 @@ static char	*make_line(int line_len, t_block *head)
 	buff_index = head->last_pos - 1;
 	while (line_len-- > 0)
 	{
-		ft_printf("%c - %x\n", head->content[buff_index],
-			head->content[buff_index]);
+		// ft_printf("%c - %x\n", head->content[buff_index],
+		// 	head->content[buff_index]);
 		line[line_len] = head->content[buff_index];
 		if (buff_index == 0 && line_len > 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/27 13:28:01 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:58:20 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_block *init_block()
     return (block);
 }
 
-// Check if str contain '\n' or if str is last line
+// Check if str contain \n or if str is last line
 //  Return :
 //   -1     : Neither EOF or \n found
 //    int   : pos of \n
@@ -62,7 +62,7 @@ int get_end_of_line(const char *str)
     int index;
 
     index = 0;
-    while (str[index] && index < BUFF_SIZE)
+    while (index < BUFF_SIZE && str[index] != '\0')
     {
         if (str[index] == '\n')
             return (index + 1);
@@ -87,7 +87,8 @@ void    content_move(t_block **block)
         (*block)->content[index] = (*block)->content[(*block)->last_pos + index];
         index++;
     }
-    (*block)->content_len = BUFF_SIZE - index;
+    // (*block)->content_len = BUFF_SIZE - index;
+    (*block)->content_len = index;
     while (index < BUFF_SIZE)
         (*block)->content[index++] = '\0';
     (*block)->last_pos = get_end_of_line((*block)->content);
