@@ -1,0 +1,209 @@
+Starting Code::Blocks Release 20.03  rev 11997 2020-04-18, 19:47:24 - wx3.0.4 - gcc 9.3.0 (Linux, unicode) - 64 bit
+Manager initialized
+Initialize EditColourSet .....
+Initialize EditColourSet: done.
+Loading menubar...
+lib_finder: loaded
+CodeStat: loaded
+RegExTestbed: loaded
+HelpPlugin: loaded
+ThreadSearch: loaded
+SmartIndentHDL: loaded
+DoxyBlocks: loaded
+CodeCompletion: loaded
+SmartIndentCpp: loaded
+SmartIndentPascal: loaded
+ToDoList: loaded
+SmartIndentLua: loaded
+rndgen: loaded
+ProjectOptionsManipulator: loaded
+Abbreviations: loaded
+ScriptedWizard: loaded
+wxSmithAui: loaded
+wxSmithContribItems: loaded
+SmartIndentXML: loaded
+SpellChecker: loaded
+OpenFilesList: loaded
+SmartIndentPython: loaded
+copystrings: loaded
+SymTab: loaded
+FileManager: loaded
+EnvVars: loaded
+HeaderFixup: loaded
+CB_Koders: loaded
+OccurrencesHighlighting: loaded
+Debugger: loaded
+wxSmith: loaded
+wxSmithMime: loaded
+FilesExtensionHandler: loaded
+CppCheck: loaded
+NassiShneidermanPlugin: loaded
+SmartIndentFortran: loaded
+MouseSap: loaded
+Profiler: loaded
+Compiler: loaded
+AStylePlugin: loaded
+EditorTweaks: loaded
+BYOGames: loaded
+ToolsPlus: loaded
+Exporter: loaded
+ClassWizard: loaded
+ProjectsImporter: loaded
+IncrementalSearch: loaded
+CodeSnippets: loaded
+AutoVersioning: loaded
+HexEditor: loaded
+cbKeyBinder: loaded
+cbDragScroll: loaded
+EditorConfig: loaded
+Cscope: loaded
+Autosave: loaded
+ReopenEditor: loaded
+Cccc: loaded
+Valgrind: loaded
+BrowseTracker: loaded
+Library finder plugin activated
+Code statistics plugin activated
+Regular expressions testbed plugin activated
+Help plugin plugin activated
+ThreadSearch plugin activated
+SmartIndentHDL plugin activated
+DoxyBlocks plugin activated
+Code completion plugin activated
+SmartIndentCpp plugin activated
+SmartIndentPascal plugin activated
+Todo List plugin activated
+SmartIndentLua plugin activated
+rndgen plugin activated
+Project options manipulator plugin activated
+Abbreviations plugin activated
+Project wizard added for 'Empty project'
+Project wizard added for 'Fortran application'
+Project wizard added for 'Fortran library'
+Project wizard added for 'Fortran DLL'
+Project wizard added for 'Console application'
+Project wizard added for 'D application'
+Project wizard added for 'FLTK project'
+Project wizard added for 'GLFW project'
+Project wizard added for 'GLUT project'
+Project wizard added for 'GTK+ project'
+Project wizard added for 'Irrlicht project'
+Project wizard added for 'Java application'
+Project wizard added for 'Lightfeather project'
+Project wizard added for 'Matlab project'
+Project wizard added for 'OpenCV project'
+Project wizard added for 'OpenGL project'
+Project wizard added for 'Ogre project'
+Project wizard added for 'Code::Blocks plugin'
+Project wizard added for 'QT4 project'
+Project wizard added for 'QT4 (shared) project'
+Project wizard added for 'QT5 project'
+Project wizard added for 'SDL project'
+Project wizard added for 'SDL2 project'
+Project wizard added for 'SFML project'
+Project wizard added for 'Static library'
+Project wizard added for 'Shared library'
+Project wizard added for 'wxWidgets project'
+Build-target wizard added for 'Console'
+Build-target wizard added for 'Static library'
+Build-target wizard added for 'wxWidgets'
+Project wizard added for 'Arduino Project'
+Project wizard added for 'ARM Project'
+Project wizard added for 'AVR Project'
+Project wizard added for 'MSP430 Project'
+Project wizard added for 'TriCore Project'
+Project wizard added for 'PowerPC Project'
+Project wizard added for 'MCS51 Project'
+File(s) wizard added for 'Empty file'
+File(s) wizard added for 'C/C++ source'
+File(s) wizard added for 'D source'
+File(s) wizard added for 'C/C++ header'
+File(s) wizard added for 'Fortran source'
+File(s) wizard added for 'Java source'
+Scripted wizard plugin activated
+wxSmith - Aui plugin activated
+wxSmith - Contrib Items plugin activated
+SmartIndentXML plugin activated
+Detected dict path: /usr/share/hunspell
+Detected thes path: /usr/share/mythes
+Found dictionary: fr_MC
+Found dictionary: fr_FR
+Selected dictionary: en_US
+Found dictionary: en_US
+Found dictionary: fr_BE
+Found dictionary: fr_CA
+Found
+(codeblocks:68955): Gtk-CRITICAL **: 23:10:16.997: gtk_tree_model_iter_nth_child: assertion 'n >= 0' failed
+ dictionary: fr_LU
+Found dictionary: fr_CH
+Found dictionary: fr
+Loading image: '/usr/share/codeblocks/SpellChecker/16x16/en_US.png' succeeded!
+SpellChecker plugin activated
+Open files list plugin activated
+SmartIndentPython plugin activated
+Copy Strings to clipboard plugin activated
+Symbol Table Plugin plugin activated
+FileManager plugin activated
+Environment variables plugin activated
+Header Fixup plugin activated
+Koders query plugin activated
+OccurrencesHighlighting plugin activated
+Debugger plugin activated
+wxSmith plugin activated
+wxSmith - MIME plugin plugin activated
+Files extension handler plugin activated
+CppCheck plugin activated
+NassiShneidermanPlugin plugin activated
+SmartIndentFortran plugin activated
+MouseSap plugin activated
+Code profiler plugin activated
+Added compiler "GNU GCC Compiler"
+Added compiler "Intel C/C++ Compiler"
+Added compiler "GDC D Compiler"
+Added compiler "GNU Fortran Compiler"
+Added compiler "G95 Fortran Compiler"
+Added compiler "GNU GCC Compiler for ARM"
+Added compiler "GNU GCC Compiler for PowerPC EABI"
+Added compiler "GNU GCC Compiler for ZPU"
+Added compiler "GNU GCC Compiler for LM8"
+Added compiler "Small Device C Compiler"
+Added compiler "*No Compiler*"
+Added compiler "LLVM D Compiler"
+Added compiler "PGI Fortran Compiler"
+Added compiler "GNU GCC Compiler for AVR"
+Added compiler "GNU GCC Compiler for TriCore (HighTec)"
+Added compiler "GNU GCC Compiler for Blackfin"
+Added compiler "Digital Mars D Compiler"
+Added compiler "GNU GCC Compiler for Android"
+Added compiler "GNU GCC Compiler for MSP430 (HighTec)"
+Added compiler "GNU GCC Compiler for LM32"
+Added compiler "LLVM Clang Compiler"
+Added compiler "Tiny C Compiler"
+Added compiler "GNU GCC Compiler for PowerPC (HighTec)"
+Compiler plugin activated
+Source code formatter (AStyle) plugin activated
+Editor Tweaks plugin: Building menu
+Editor Tweaks plugin: making the menu 15
+Editor Tweaks plugin: Folding menu
+EditorTweaks plugin activated
+BYO Games plugin activated
+ToolsPlus plugin activated
+Source Exporter plugin activated
+Class wizard plugin activated
+Foreign projects importer plugin activated
+IncrementalSearch plugin activated
+Code snippets plugin activated
+AutoVersioning plugin activated
+HexEditor plugin activated
+Keyboard shortcuts plugin activated
+DragScroll plugin activated
+EditorConfig plugin for Code::Blocks plugin activated
+Cscope plugin activated
+Autosave plugin activated
+ReopenEditor plugin activated
+Cccc plugin activated
+Valgrind plugin activated
+BrowseTracker plugin activated
+Loading toolbar...
+Initializing plugins...
+Deinitializing plugins...

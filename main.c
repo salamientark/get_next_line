@@ -14,16 +14,17 @@ int main()
     // int fd = open("test/basic_5", O_RDONLY);
     // int fd = open("test/basic_6", O_RDONLY);
     // int fd = open("test/basic_7", O_RDONLY);
-    int fd = open("test/basic_8", O_RDONLY);
+    // int fd = open("test/basic_8", O_RDONLY);
+    // int fd = open("test/basic_9", O_RDONLY);
+    int fd = open("test/basic_10", O_RDONLY);
+    // int fd = open("test/nohup.out", O_RDONLY);
     char *line = get_next_line(fd);
-    ft_printf("line 1: %s", line);
-    line = get_next_line(fd);
-    ft_printf("line 2: %s", line);
-    line = get_next_line(fd);
-    ft_printf("line 3: %s", line);
-    line = get_next_line(fd);
-    ft_printf("line 4: %s", line);
+    while (line)
+    {
+        ft_printf("%s", line);
+        free(line);
+        line = get_next_line(fd);
+    }
     close(fd);
-    free(line);
     return (0);
 }

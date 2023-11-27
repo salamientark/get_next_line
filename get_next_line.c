@@ -14,7 +14,7 @@ static int	read_block(const int fd, t_block **block)
 	// content_len = read(fd, (*block)->content + (*block)->last_pos,
 	// 	BUFF_SIZE - (*block)->last_pos);
 	content_len = read(fd, (*block)->content + (*block)->content_len,
-		BUFF_SIZE - (*block)->content_len);
+		BUFF_SIZE - (*block)->content_len) + (*block)->content_len;
 	if (content_len == -1)
 		return (-1);
 	(*block)->content_len = content_len;
