@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
+/*   Updated: 2023/11/27 21:54:40 by dbaladro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 // Read one text_block and put the result into block->content
@@ -10,10 +22,8 @@ static int	read_block(const int fd, t_block **block)
 
 	if (!(*block))
 		(*block) = init_block();
-	// content_len = read(fd, (*block)->content + (*block)->last_pos,
-	// 	BUFF_SIZE - (*block)->last_pos);
 	content_len = read(fd, (*block)->content + (*block)->content_len,
-		BUFF_SIZE - (*block)->content_len) + (*block)->content_len;
+			BUFF_SIZE - (*block)->content_len) + (*block)->content_len;
 	if (content_len == -1)
 		return (-1);
 	(*block)->content_len = content_len;
@@ -33,10 +43,6 @@ static int	read_line(const int fd, t_block **head)
 	int		line_len;
 
 	line_len = 0;
-	// if (!(*head))
-	//  	line_len += read_block(fd, head);
-	// else
-	// 	content_move(head);
 	if (*head && (*head)->content)
 		content_move(head);
 	line_len += read_block(fd, head);
@@ -61,8 +67,6 @@ static char	*make_line(int line_len, t_block *head)
 
 	if (line_len == 0)
 		return (NULL);
-	// if (head->content[head->last_pos] == '\n')
-	// 	line_len++;
 	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
@@ -70,8 +74,6 @@ static char	*make_line(int line_len, t_block *head)
 	buff_index = head->last_pos - 1;
 	while (line_len-- > 0)
 	{
-		// ft_printf("%c - %x\n", head->content[buff_index],
-		// 	head->content[buff_index]);
 		line[line_len] = head->content[buff_index];
 		if (buff_index == 0 && line_len > 0)
 		{
@@ -97,8 +99,8 @@ char	*get_next_line(const int fd)
 		return (NULL);
 	line_len = read_line(fd, &head);
 	line = make_line(line_len, head);
-	if (!line || head->content_len == 0 ||
-		(head->content_len < BUFF_SIZE && head->content_len == head->last_pos))
+	if (!line || head->content_len == 0 || (head->content_len < BUFF_SIZE
+			&& head->content_len == head->last_pos))
 		free_all(&head);
 	else
 	{
