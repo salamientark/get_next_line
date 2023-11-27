@@ -98,7 +98,8 @@ char	*get_next_line(const int fd)
 		return (NULL);
 	line_len = read_line(fd, &head);
 	line = make_line(line_len, head);
-	if (!line || head->content_len == 0)
+	if (!line || head->content_len == 0 ||
+		(head->content_len < BUFF_SIZE && head->content_len == head->last_pos))
 		free_all(&head);
 	else
 	{

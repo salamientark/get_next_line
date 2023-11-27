@@ -16,8 +16,8 @@ int main()
     // int fd = open("test/basic_7", O_RDONLY);
     // int fd = open("test/basic_8", O_RDONLY);
     // int fd = open("test/basic_9", O_RDONLY);
-    int fd = open("test/basic_10", O_RDONLY);
-    // int fd = open("test/nohup.out", O_RDONLY);
+    // int fd = open("test/basic_10", O_RDONLY);
+    int fd = open("test/nohup.out", O_RDONLY);
     char *line = get_next_line(fd);
     while (line)
     {
