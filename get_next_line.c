@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/27 21:54:40 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/28 12:38:19 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*get_next_line(const int fd)
 	int				line_len;
 	char			*line;
 
-	if (!fd)
+	if (!fd || BUFF_SIZE == 0)
 		return (NULL);
 	line_len = read_line(fd, &head);
 	line = make_line(line_len, head);

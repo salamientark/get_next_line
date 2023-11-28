@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/27 22:01:35 by madlab           ###   ########.fr       */
+/*   Updated: 2023/11/28 12:36:41 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,18 @@ void	content_move(t_block **block)
 	int	index;
 
 	index = 0;
-	while (index < (BUFF_SIZE - (*block)->last_pos))
+	while (index < (BUFF_SIZE - (*block)->last_pos)
+        && (*block)->content[(*block)->last_pos + index] != '\0')
 	{
 		(*block)->content[index] = (*block)->content[(*block)->last_pos
 			+ index];
+        // if ((*block)->content[(*block)->last_pos + index] == '\0')
+        // {
+	    //     (*block)->content_len = index;
+        // }
 		index++;
 	}
+    // if ((*block)->content[(*block)->content_len] != '\0')
 	(*block)->content_len = index;
 	while (index < BUFF_SIZE)
 		(*block)->content[index++] = '\0';
