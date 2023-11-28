@@ -16,7 +16,7 @@
 # include <stdlib.h>
 
 # ifndef BUFF_SIZE
-#  define BUFF_SIZE 32
+#  define BUFF_SIZE 256
 # endif
 
 // Chained list of text_blocks
