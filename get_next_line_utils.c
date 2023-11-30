@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/28 20:58:13 by madlab           ###   ########.fr       */
+/*   Updated: 2023/11/30 18:31:55 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	get_char_pos(const char *str, int c)
 	index = 0;
 	while (index < BUFF_SIZE)
 	{
-		if (str[index] == c)
-			return (index + 1);
+		if (!str[index] || str[index] == c)
+			return (index);
 		index++;
 	}
 	return (-1);

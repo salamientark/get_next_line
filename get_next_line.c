@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/28 12:38:19 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:20:13 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	read_block(const int fd, t_block **block)
 		return (-1);
 	(*block)->content_len = content_len;
 	(*block)->last_pos = get_char_pos((*block)->content, '\n');
-	if ((*block)->last_pos != -1)
+	if ((*block)->last_pos > 0)
 		return ((*block)->last_pos);
 	return (content_len);
 }
@@ -46,6 +46,8 @@ static int	read_line(const int fd, t_block **head)
 	if (*head && (*head)->content)
 		content_move(head);
 	line_len += read_block(fd, head);
+	if (line_len == -1)
+		return (-1);
 	while ((*head)->last_pos == -1 && (*head)->content_len == BUFF_SIZE)
 	{
 		tmp_block = init_block();
@@ -65,13 +67,16 @@ static char	*make_line(int line_len, t_block *head)
 	char	*line;
 	int		buff_index;
 
-	if (line_len == 0)
-		return (NULL);
 	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
+	if (head->content_len == 0)
+	{
+		head = head->next;
+		head->last_pos = BUFF_SIZE - 1;
+	}
 	line[line_len] = '\0';
-	buff_index = head->last_pos - 1;
+	buff_index = head->last_pos;
 	while (line_len-- > 0)
 	{
 		line[line_len] = head->content[buff_index];
@@ -98,9 +103,12 @@ char	*get_next_line(const int fd)
 	if (!fd || BUFF_SIZE == 0)
 		return (NULL);
 	line_len = read_line(fd, &head);
+	if (line_len <= 0)
+		return(free_all(&head), NULL);
 	line = make_line(line_len, head);
-	if (!line || head->content_len == 0 || (head->content_len < BUFF_SIZE
-			&& head->content_len == head->last_pos))
+	// if (!line || head->content_len == 0 || (head->content_len < BUFF_SIZE
+			// && head->content_len == head->last_pos))
+	if (!line || head->content_len == 0 || head->last_pos == (BUFF_SIZE - 1))
 		free_all(&head);
 	else
 	{
