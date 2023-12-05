@@ -1,13 +1,15 @@
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+// #include "get_next_line.h"
 #include "testing.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
+#include <unistd.h>
+#include <stdio.h>
 
 int main()
 {
-    // int fd = open("test/basic_1", O_RDONLY);
+    int fd = open("test/basic_1", O_RDONLY);
     // int fd = open("test/basic_2", O_RDONLY);
     // int fd = open("test/basic_3", O_RDONLY);
     // int fd = open("test/basic_4", O_RDONLY);
@@ -19,7 +21,7 @@ int main()
     // int fd = open("test/basic_10", O_RDONLY);
     // int fd = open("test/nohup.out", O_RDONLY);
     // int fd = open("test/hey/41_with_nl", O_RDONLY);
-    int fd = open("test/hey/nl", O_RDONLY);
+    // int fd = open("test/hey/nl", O_RDONLY);
     char *line = get_next_line(fd);
     while (line)
     {

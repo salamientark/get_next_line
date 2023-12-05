@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/30 22:40:47 by dbaladro         ###   ########.fr       */
+/*   Created: 2023/12/02 15:35:55 by dbaladro          #+#    #+#             */
+/*   Updated: 2023/12/05 22:34:50 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+
+#include "get_next_line_bonus.h"
 
 // Read one text_block and put the result into block->content
 //	Return :
@@ -96,18 +97,24 @@ static char	*make_line(int line_len, t_block *head)
 //		NULL	: Error or No more line
 char	*get_next_line(const int fd)
 {
-	static t_block	*head;
-	int				line_len;
-	char			*line;
+	static t_gnl_env	*gnl_env;
+	t_gnl_env			tmp_gnl_env;
+	int				    line_len;
+	char			    *line;
 
 	if (fd < 0 || BUFF_SIZE == 0)
 		return (NULL);
-	line_len = read_line(fd, &head);
+	tmp_gnl_env = gnl_env;
+	while (tmp_gnl_env && tmp_gnl_env->fd != fd)
+		tmp_gnl_env = tmp_gnl_env->next;
+	if (!tmp_gnl_env)
+		tmp_gnl_env = init_gnl_env(fd, gnl_env);
+	line_len = read_line(fd, &(tmp_gnl_env->head));
 	if (line_len <= 0)
 		return (free_all(&head), NULL);
 	line = make_line(line_len, head);
 	if (!line || head->content_len == 0 || head->last_pos == (BUFF_SIZE - 1))
-		free_all(&head);
+		remove_gnl_env(fd, &gnl_env);
 	else
 	{
 		free_all(&(head->next));
