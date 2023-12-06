@@ -6,7 +6,11 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/30 22:40:47 by dbaladro         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/30 20:20:13 by dbaladro         ###   ########.fr       */
+>>>>>>> parent of 6555efd (Normed passed mandatory test)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +104,14 @@ char	*get_next_line(const int fd)
 	int				line_len;
 	char			*line;
 
-	if (fd < 0 || BUFF_SIZE == 0)
+	if (!fd || BUFF_SIZE == 0)
 		return (NULL);
 	line_len = read_line(fd, &head);
 	if (line_len <= 0)
-		return (free_all(&head), NULL);
+		return(free_all(&head), NULL);
 	line = make_line(line_len, head);
+	// if (!line || head->content_len == 0 || (head->content_len < BUFF_SIZE
+			// && head->content_len == head->last_pos))
 	if (!line || head->content_len == 0 || head->last_pos == (BUFF_SIZE - 1))
 		free_all(&head);
 	else
