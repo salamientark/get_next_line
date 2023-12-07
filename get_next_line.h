@@ -15,8 +15,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE 1
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
 # endif
 
 // Chained list of text_blocks

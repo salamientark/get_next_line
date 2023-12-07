@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:33:50 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/05 22:43:52 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:01:45 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE 1
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
 # endif
 
 // Chained list of text_blocks

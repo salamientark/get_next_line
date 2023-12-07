@@ -1,5 +1,5 @@
 ### COMPILATION ###
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 ### FT_PRINTF ###
@@ -10,7 +10,7 @@ FT_PRINTF_DIR = ./ft_printf
 MAIN = main.out
 ### SOURCE FILES ###
 SRC_FILE = get_next_line.c get_next_line_utils.c \
-			testing.c main.c
+			main.c
 BONUS_FILE =
 ### HEADER FILE ###
 INCLUDE_DIR = ./
@@ -22,11 +22,11 @@ BONUS_OBJ = $(BONUS_FILE:.c=.o)
 ### RULES ###
 all : $(MAIN)
 
-$(MAIN) : $(OBJ_FILE) $(FT_PRINTF)
-	$(CC) $(CFLAGS) $(OBJ_FILE) -I $(INCLUDE_DIR) $(FT_PRINTF_DIR)/$(FT_PRINTF) -o $(MAIN)
+$(MAIN) : $(SRC_FILE) $(FT_PRINTF)
+	$(CC) $(CFLAGS) $(SRC_FILE) -I $(INCLUDE_DIR) $(FT_PRINTF_DIR)/$(FT_PRINTF) -o $(MAIN)
 
-%.o : %.c $(INCLUDE_FILE)
-	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@
+# %.o : %.c
+# 	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@
 
 $(FT_PRINTF) :
 	make -C $(FT_PRINTF_DIR)/

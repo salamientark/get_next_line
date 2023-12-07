@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/30 18:31:55 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/07 20:50:35 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,48 +39,36 @@ t_block	*init_block(void)
 	block = (t_block *)malloc(sizeof(struct s_block));
 	if (!block)
 		return (NULL);
-	block->content = (char *)malloc(sizeof(char) * BUFF_SIZE);
+	block->content = (char *)malloc(sizeof(char) * BUFFER_SIZE);
 	if (!block->content)
 	{
 		free(block);
 		return (NULL);
 	}
 	index = 0;
-	while (index < BUFF_SIZE)
+	while (index < BUFFER_SIZE)
 		block->content[index++] = '\0';
-	block->content_len = 0;
+	block->content_len = -1;
 	block->last_pos = 0;
 	block->next = NULL;
 	return (block);
 }
 
-int	get_char_pos(const char *str, int c)
-{
-	int	index;
-
-	index = 0;
-	while (index < BUFF_SIZE)
-	{
-		if (!str[index] || str[index] == c)
-			return (index);
-		index++;
-	}
-	return (-1);
-}
-
-// Check if str contain \n or if str is last line
+// Check if EOL or EOF are in blocks
+// Differ from the content len in the way that 
+// next line could be in the same block
 //	Return :
-//	 -1	 : Neither EOF or \n found
-//	int	 : pos of \n
-int	get_end_of_line(const char *str)
+//	 0 < int < BUFF_SIZE	: end_of_line || end_of_file found
+//	 BUFFER_SIZE			: line is longer
+int	end_of_line(const char *str)
 {
 	int	index;
 
 	index = 0;
-	while (index < BUFF_SIZE && str[index] != '\0')
+	while (index < BUFFER_SIZE)
 	{
-		if (str[index] == '\n')
-			return (index + 1);
+		if (!str[index] || str[index] == '\n')
+			return (index);
 		index++;
 	}
 	return (-1);
@@ -96,7 +84,7 @@ void	content_move(t_block **block)
 	int	index;
 
 	index = 0;
-	while (index < (BUFF_SIZE - (*block)->last_pos)
+	while (index < (BUFFER_SIZE - (*block)->last_pos)
 		&& (*block)->content[(*block)->last_pos + index] != '\0')
 	{
 		(*block)->content[index] = (*block)->content[(*block)->last_pos
@@ -104,7 +92,10 @@ void	content_move(t_block **block)
 		index++;
 	}
 	(*block)->content_len = index;
-	while (index < BUFF_SIZE)
+	while (index < BUFFER_SIZE)
 		(*block)->content[index++] = '\0';
-	(*block)->last_pos = get_char_pos((*block)->content, '\n');
+	// (*block)->last_pos = get_char_pos((*block)->content, '\n');
+	while (!(!(*block)->last_pos || (*block)->last_pos == '\n')
+			&& (*block)->last_pos < BUFFER_SIZE)
+		(*block)->last_pos = (*block)->last_pos + 1;
 }
