@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/08 19:19:47 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:15:54 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ t_block	*init_block(void)
 	index = 0;
 	while (index < BUFFER_SIZE)
 		block->content[index++] = '\0';
-	// block->content_len = -1;
 	block->content_len = 0;
 	block->last_pos = 0;
 	block->next = NULL;
@@ -70,8 +69,6 @@ int	end_of_line(const char *str)
 	{
 		if (!str[index])
 		{
-			// if (index == 0 || index == 1)
-			// 	return (0);
 			return (index);
 		}
 		if (str[index] == '\n')
@@ -102,6 +99,5 @@ void	content_move(t_block **block)
 	(*block)->content_len = index;
 	while (index < BUFFER_SIZE)
 		(*block)->content[index++] = '\0';
-	// (*block)->last_pos = get_char_pos((*block)->content, '\n');
 	(*block)->last_pos = end_of_line((*block)->content);
 }
