@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/08 20:21:40 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:28:59 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ static int	read_block(const int fd, t_block **block)
 		return (content_len);
 	}
 	(*block)->content_len = content_len;
-	// while ((*block)->last_pos < BUFFER_SIZE && (*block)->content[(*block)->last_pos] && (*block)->content[(*block)->last_pos] != '\n')
-		// (*block)->last_pos = (*block)->last_pos + 1;
 	(*block)->last_pos = end_of_line((*block)->content);
-	if ((*block)->last_pos < BUFFER_SIZE && (*block)->content[(*block)->last_pos] == '\n')
+	if ((*block)->last_pos < BUFFER_SIZE
+		&& (*block)->content[(*block)->last_pos] == '\n')
 		return ((*block)->last_pos + 1);
 	return ((*block)->last_pos);
 }
@@ -70,7 +69,7 @@ static int	read_line(const int fd, t_block **head)
 		}
 		else if (read_result == -1)
 			return (-1);
-		else 
+		else
 			return (line_len);
 	}
 	return (line_len);
@@ -89,10 +88,7 @@ static char	*make_line(int line_len, t_block *head)
 	if (!line)
 		return (NULL);
 	if (head->content_len == 0)
-	{
 		head = head->next;
-		head->last_pos = BUFFER_SIZE - 1;
-	}
 	line[line_len] = '\0';
 	buff_index = head->last_pos;
 	if (buff_index == head->content_len)
@@ -106,7 +102,6 @@ static char	*make_line(int line_len, t_block *head)
 			buff_index = BUFFER_SIZE;
 		}
 		buff_index--;
-		// line_len--;
 	}
 	return (line);
 }
@@ -123,11 +118,9 @@ char	*get_next_line(const int fd)
 
 	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
-	// if (!head)
-		// head = init_block();
 	line_len = read_line(fd, &head);
 	if (line_len <= 0)
-		return(free_all(&head), NULL);
+		return (free_all(&head), NULL);
 	line = make_line(line_len, head);
 	if (!line || head->content_len == 0 || head->last_pos == head->content_len)
 		free_all(&head);
