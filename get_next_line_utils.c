@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/07 20:50:35 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/08 01:30:49 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,13 @@ int	end_of_line(const char *str)
 	index = 0;
 	while (index < BUFFER_SIZE)
 	{
-		if (!str[index] || str[index] == '\n')
+		if (!str[index])
 			return (index);
+		if (str[index] == '\n')
+			return (index + 1);
 		index++;
 	}
-	return (-1);
+	return (index);
 }
 
 // Move part of the list content at the begining of it

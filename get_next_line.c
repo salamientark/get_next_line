@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/07 21:20:28 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/08 01:33:58 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,9 @@ static int	read_block(const int fd, t_block **block)
 		return (content_len);
 	}
 	(*block)->content_len = content_len;
-	// while (!(!(*block)->last_pos || (*block)->last_pos == '\n')
-	// 		&& (*block)->last_pos < BUFFER_SIZE)
-	// 	(*block)->last_pos = (*block)->last_pos + 1;
 	while ((*block)->last_pos < BUFFER_SIZE
-		&& (*block)->content[(*block)->last_pos] != '\n'
-			&& (*block)->content[(*block)->last_pos] != '\0')
+		&& (*block)->content[(*block)->last_pos] != '\0'
+			&& (*block)->content[(*block)->last_pos] != '\n')
 		(*block)->last_pos = (*block)->last_pos + 1;
 	return ((*block)->content_len);
 }
@@ -99,7 +96,7 @@ static char	*make_line(int line_len, t_block *head)
 	}
 	line[line_len] = '\0';
 	buff_index = head->last_pos;
-	if (buff_index == BUFFER_SIZE)
+	if (buff_index > 0)
 		buff_index--;
 	while (line_len-- > 0)
 	{
