@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/08 01:30:49 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:19:47 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ t_block	*init_block(void)
 	index = 0;
 	while (index < BUFFER_SIZE)
 		block->content[index++] = '\0';
-	block->content_len = -1;
+	// block->content_len = -1;
+	block->content_len = 0;
 	block->last_pos = 0;
 	block->next = NULL;
 	return (block);
@@ -68,9 +69,13 @@ int	end_of_line(const char *str)
 	while (index < BUFFER_SIZE)
 	{
 		if (!str[index])
+		{
+			// if (index == 0 || index == 1)
+			// 	return (0);
 			return (index);
+		}
 		if (str[index] == '\n')
-			return (index + 1);
+			return (index);
 		index++;
 	}
 	return (index);
@@ -86,6 +91,7 @@ void	content_move(t_block **block)
 	int	index;
 
 	index = 0;
+	(*block)->last_pos = (*block)->last_pos + 1;
 	while (index < (BUFFER_SIZE - (*block)->last_pos)
 		&& (*block)->content[(*block)->last_pos + index] != '\0')
 	{
@@ -97,7 +103,5 @@ void	content_move(t_block **block)
 	while (index < BUFFER_SIZE)
 		(*block)->content[index++] = '\0';
 	// (*block)->last_pos = get_char_pos((*block)->content, '\n');
-	while (!(!(*block)->last_pos || (*block)->last_pos == '\n')
-			&& (*block)->last_pos < BUFFER_SIZE)
-		(*block)->last_pos = (*block)->last_pos + 1;
+	(*block)->last_pos = end_of_line((*block)->content);
 }

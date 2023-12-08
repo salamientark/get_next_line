@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/08 01:33:58 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:27:18 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static int	read_block(const int fd, t_block **block)
 	int	content_len;
 
 	if (!(*block))
-		return (-1);
-	if ((*block)->content_len == -1)
-		(*block)->content_len = 0;
+		*block = init_block();
 	content_len = read(fd, (*block)->content + (*block)->content_len,
 			BUFFER_SIZE - (*block)->content_len) + (*block)->content_len;
 	if (content_len <= 0)
@@ -39,11 +37,10 @@ static int	read_block(const int fd, t_block **block)
 		return (content_len);
 	}
 	(*block)->content_len = content_len;
-	while ((*block)->last_pos < BUFFER_SIZE
-		&& (*block)->content[(*block)->last_pos] != '\0'
-			&& (*block)->content[(*block)->last_pos] != '\n')
-		(*block)->last_pos = (*block)->last_pos + 1;
-	return ((*block)->content_len);
+	(*block)->last_pos = end_of_line((*block)->content);
+	if ((*block)->last_pos < BUFFER_SIZE && (*block)->content[(*block)->last_pos] == '\n')
+		return ((*block)->last_pos + 1);
+	return ((*block)->last_pos);
 }
 
 // Read one line from file and make a chained list of blocks from it
@@ -56,10 +53,10 @@ static int	read_line(const int fd, t_block **head)
 	int		line_len;
 	int		read_result;
 
-	line_len = 0;
-	read_result = 1;
-	while (((*head)->last_pos == BUFFER_SIZE || (*head)->content_len == -1)
-			&& read_result > 0)
+	line_len = read_block(fd, head);
+	if (line_len <= 0)
+		return (line_len);
+	while (((*head)->last_pos == BUFFER_SIZE || (*head)->content_len == 0))
 	{
 		tmp_block = init_block();
 		read_result = read_block(fd, &tmp_block);
@@ -96,7 +93,7 @@ static char	*make_line(int line_len, t_block *head)
 	}
 	line[line_len] = '\0';
 	buff_index = head->last_pos;
-	if (buff_index > 0)
+	if (buff_index == head->content_len)
 		buff_index--;
 	while (line_len-- > 0)
 	{
@@ -107,6 +104,7 @@ static char	*make_line(int line_len, t_block *head)
 			buff_index = BUFFER_SIZE;
 		}
 		buff_index--;
+		// line_len--;
 	}
 	return (line);
 }
@@ -123,13 +121,13 @@ char	*get_next_line(const int fd)
 
 	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
-	if (!head)
-		head = init_block();
+	// if (!head)
+		// head = init_block();
 	line_len = read_line(fd, &head);
 	if (line_len <= 0)
 		return(free_all(&head), NULL);
 	line = make_line(line_len, head);
-	if (!line || head->content_len == 0 || head->last_pos == (BUFFER_SIZE - 1))
+	if (!line || head->content_len == 0 || head->last_pos == head->content_len)
 		free_all(&head);
 	else
 	{
