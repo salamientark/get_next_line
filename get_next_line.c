@@ -6,18 +6,19 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/09 16:38:03 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:58:49 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 // Read one text_block and put the result into block->content
-// Free the block on ERROR
+// On ERROR or NULL reading (read 0 char)
+// free the allocated block
 //	Return :
-//		[0;BUFFER_SIZE[	: number of char read from file
+//		[0;BUFFER_SIZE]	: number of char read from file
 //			-1			: ERROR
-static int	read_block(const int fd, t_block **block)
+static ssize_t	read_block(const int fd, t_block **block)
 {
 	int	content_len;
 
@@ -44,11 +45,12 @@ static int	read_block(const int fd, t_block **block)
 	return ((*block)->last_pos);
 }
 
-// Read one line from file and make a chained list of blocks from it
+// Read one line from file store the result as a chained list
+// Don't free on error
 //	Return :
 //		[0;∞[	: number of char in line
-//		-1		: ERROR
-static int	read_line(const int fd, t_block **head)
+//		-1	: ERROR
+static ssize_t	read_line(const int fd, t_block **head)
 {
 	t_block	*tmp_block;
 	int		line_len;
@@ -75,14 +77,14 @@ static int	read_line(const int fd, t_block **head)
 	return (line_len);
 }
 
-// Make a (char *)line from 'head' text_block list of length 'line_len'
+// Convert chained list (head) to line of len (line_len)a
 //	Return :
 //		(char *)	: New_line made
 //		NULL		: ERROR or no line to make
-static char	*make_line(int line_len, t_block *head)
+static char	*make_line(ssize_t line_len, t_block *head)
 {
 	char	*line;
-	int		buff_index;
+	ssize_t	buff_index;
 
 	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
@@ -113,7 +115,7 @@ static char	*make_line(int line_len, t_block *head)
 char	*get_next_line(const int fd)
 {
 	static t_block	*head;
-	int				line_len;
+	ssize_t			line_len;
 	char			*line;
 
 	if (fd < 0 || BUFFER_SIZE == 0)

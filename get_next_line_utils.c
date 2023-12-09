@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/09 16:49:41 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:02:52 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,16 @@ t_block	*init_block(void)
 	return (block);
 }
 
+// Maybe could be removed
 // Check if EOL or EOF are in blocks
 // Differ from the content len in the way that 
 // next line could be in the same block
 //	Return :
 //	 0 < int < BUFF_SIZE	: end_of_line || end_of_file found
 //	 BUFFER_SIZE			: line is longer
-int	end_of_line(const char *str, const int size)
+ssize_t	end_of_line(const char *str, const ssize_t size)
 {
-	int	index;
+	ssize_t	index;
 
 	index = 0;
 	while (index < size)
@@ -70,9 +71,8 @@ int	end_of_line(const char *str, const int size)
 	return (index);
 }
 
-// Move part of the list content at the begining of it
-//	 filling the rest with \0
-//	Same as memmove then memeset \0 for the end of content
+// Move block->buffer_content at the beginning of it
+// after a line was read
 //		Return :
 //			void
 void	content_move(t_block **block)
