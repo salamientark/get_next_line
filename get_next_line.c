@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/08 20:28:59 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:38:03 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static int	read_block(const int fd, t_block **block)
 		return (content_len);
 	}
 	(*block)->content_len = content_len;
-	(*block)->last_pos = end_of_line((*block)->content);
-	if ((*block)->last_pos < BUFFER_SIZE
+	(*block)->last_pos = end_of_line((*block)->content, (*block)->content_len);
+	if ((*block)->last_pos < (*block)->content_len
 		&& (*block)->content[(*block)->last_pos] == '\n')
 		return ((*block)->last_pos + 1);
 	return ((*block)->last_pos);

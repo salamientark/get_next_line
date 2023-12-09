@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/08 20:15:54 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:49:41 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	free_all(t_block **text_block)
 t_block	*init_block(void)
 {
 	t_block	*block;
-	int		index;
 
 	block = (t_block *)malloc(sizeof(struct s_block));
 	if (!block)
@@ -45,9 +44,6 @@ t_block	*init_block(void)
 		free(block);
 		return (NULL);
 	}
-	index = 0;
-	while (index < BUFFER_SIZE)
-		block->content[index++] = '\0';
 	block->content_len = 0;
 	block->last_pos = 0;
 	block->next = NULL;
@@ -60,17 +56,13 @@ t_block	*init_block(void)
 //	Return :
 //	 0 < int < BUFF_SIZE	: end_of_line || end_of_file found
 //	 BUFFER_SIZE			: line is longer
-int	end_of_line(const char *str)
+int	end_of_line(const char *str, const int size)
 {
 	int	index;
 
 	index = 0;
-	while (index < BUFFER_SIZE)
+	while (index < size)
 	{
-		if (!str[index])
-		{
-			return (index);
-		}
 		if (str[index] == '\n')
 			return (index);
 		index++;
@@ -89,7 +81,7 @@ void	content_move(t_block **block)
 
 	index = 0;
 	(*block)->last_pos = (*block)->last_pos + 1;
-	while (index < (BUFFER_SIZE - (*block)->last_pos)
+	while (index < ((*block)->content_len - (*block)->last_pos)
 		&& (*block)->content[(*block)->last_pos + index] != '\0')
 	{
 		(*block)->content[index] = (*block)->content[(*block)->last_pos
@@ -97,7 +89,5 @@ void	content_move(t_block **block)
 		index++;
 	}
 	(*block)->content_len = index;
-	while (index < BUFFER_SIZE)
-		(*block)->content[index++] = '\0';
-	(*block)->last_pos = end_of_line((*block)->content);
+	(*block)->last_pos = end_of_line((*block)->content, (*block)->content_len);
 }

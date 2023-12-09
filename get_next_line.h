@@ -17,7 +17,7 @@
 # include "./ft_printf/ft_printf.h"
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10000
+#  define BUFFER_SIZE 10000000
 # endif
 
 // Chained list of text_blocks
@@ -38,7 +38,7 @@ t_block	*init_block(void);
 int		get_char_pos(const char *str, int c);
 int		get_end_of_line(const char *str);
 void	content_move(t_block **block);
-int		end_of_line(const char *str);
+int		end_of_line(const char *str, const int size);
 void	free_all(t_block **text_block);
 
 // GNL
