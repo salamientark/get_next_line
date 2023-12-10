@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/10 19:11:31 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:59:48 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,24 @@ static char	*make_line(ssize_t line_len, t_block *head)
 {
 	char	*line;
 	ssize_t	buff_index;
+	t_block	*record;
 
+	record = head;
 	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
-	if (head->content_len == 0)
-		head = head->next;
+	if (record->content_len == 0)
+		record = record->next;
 	line[line_len] = '\0';
-	buff_index = head->last_pos;
-	if (buff_index == head->content_len)
+	buff_index = record->last_pos;
+	if (buff_index == record->content_len)
 		buff_index--;
 	while (line_len-- > 0)
 	{
-		line[line_len] = head->content[buff_index];
+		line[line_len] = record->content[buff_index];
 		if (buff_index == 0 && line_len > 0)
 		{
-			head = head->next;
+			record = record->next;
 			buff_index = BUFFER_SIZE;
 		}
 		buff_index--;
@@ -116,7 +118,6 @@ static char	*make_line(ssize_t line_len, t_block *head)
 //		NULL	: Error or No more line
 char	*get_next_line_fd(const int fd, t_block *head)
 {
-	// static t_block	*head;
 	ssize_t			line_len;
 	char			*line;
 
@@ -126,13 +127,13 @@ char	*get_next_line_fd(const int fd, t_block *head)
 	if (line_len <= 0)
 		return (free_all_b(&head), NULL);
 	line = make_line(line_len, head);
-	if (!line || head->content_len == 0 || head->last_pos == head->content_len)
+	content_move(&head);
+	if (!line || head->content_len == 0)
 		free_all_b(&head);
 	else
 	{
 		free_all_b(&(head->next));
 		head->next = NULL;
-		content_move(&head);
 	}
 	return (line);
 }

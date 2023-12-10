@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/09 21:25:28 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:57:24 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,6 @@ t_block	*init_block(void)
 	block->next = NULL;
 	return (block);
 }
-
-// Maybe could be removed
-// Check if EOL or EOF are in blocks
-// Differ from the content len in the way that 
-// next line could be in the same block
-//	Return :
-//	 0 < int < BUFF_SIZE	: end_of_line || end_of_file found
-//	 BUFFER_SIZE			: line is longer
-// ssize_t	end_of_line(const char *str, const ssize_t size)
-// {
-// 	ssize_t	index;
-
-// 	index = 0;
-// 	while (index < size)
-// 	{
-// 		if (str[index] == '\n')
-// 			return (index);
-// 		index++;
-// 	}
-// 	return (index);
-// }
 
 // Move block->buffer_content at the beginning of it
 // after a line was read

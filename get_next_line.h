@@ -17,7 +17,7 @@
 # include "./ft_printf/ft_printf.h"
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 512
+#  define BUFFER_SIZE 42
 # endif
 
 // Chained list of text_blocks
