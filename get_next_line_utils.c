@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/09 21:16:42 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/09 21:25:28 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,19 @@ t_block	*init_block(void)
 //	Return :
 //	 0 < int < BUFF_SIZE	: end_of_line || end_of_file found
 //	 BUFFER_SIZE			: line is longer
-ssize_t	end_of_line(const char *str, const ssize_t size)
-{
-	ssize_t	index;
+// ssize_t	end_of_line(const char *str, const ssize_t size)
+// {
+// 	ssize_t	index;
 
-	index = 0;
-	while (index < size)
-	{
-		if (str[index] == '\n')
-			return (index);
-		index++;
-	}
-	return (index);
-}
+// 	index = 0;
+// 	while (index < size)
+// 	{
+// 		if (str[index] == '\n')
+// 			return (index);
+// 		index++;
+// 	}
+// 	return (index);
+// }
 
 // Move block->buffer_content at the beginning of it
 // after a line was read
