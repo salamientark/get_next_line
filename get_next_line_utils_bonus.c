@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/11 19:45:04 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/11 20:39:07 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	remove_fd(t_gnl_env **gnl_env, const int fd)
 	t_gnl_env	*record;
 	t_gnl_env	*tmp;
 
-	if (!(*gnl_env))
-		return ;
 	tmp = (*gnl_env)->next;
 	if (tmp == NULL || (*gnl_env)->fd == fd)
 	{

@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/11 19:47:04 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/11 20:40:33 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,6 @@ char	*get_next_line(const int fd)
 
 	if (fd == -1 || BUFFER_SIZE == 0)
 		return (NULL);
-	if (!gnl_env)
-	{
-		gnl_env = init_gnl_env(fd);
-		if (!gnl_env)
-			return (NULL);
-	}
 	record = gnl_env;
 	while (record && record->fd != fd)
 		record = record->next;
