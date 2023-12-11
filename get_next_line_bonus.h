@@ -14,10 +14,9 @@
 # define GET_NEXT_LINE_BONUS_H
 # include <unistd.h>
 # include <stdlib.h>
-# include "./../ft_printf/ft_printf.h"
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 2048
 # endif
 
 // Chained list of text_blocks
