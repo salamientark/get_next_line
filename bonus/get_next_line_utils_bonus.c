@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/10 19:04:37 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:50:56 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ void	free_all_b(t_block **text_block)
 {
 	t_block	*tmp;
 
+	// if (!(*text_block)->content)
+	// {
+	// 	free(*text_block);
+	// 	*text_block = NULL;
+	// 	return ;
+	// }
 	while ((*text_block))
 	{
 		tmp = (*text_block)->next;
@@ -29,22 +35,23 @@ void	free_all_b(t_block **text_block)
 }
 
 // Free and remove the associated fd_env if found
-void	remove_fd(t_gnl_env *gnl_env, const int fd)
+void	remove_fd(t_gnl_env **gnl_env, const int fd)
 {
 	t_gnl_env	*record;
 	t_gnl_env	*tmp;
 
-	if (!gnl_env)
+	if (!(*gnl_env))
 		return ;
-	tmp = gnl_env->next;
-	if (tmp == NULL || tmp->fd == fd)
+	tmp = (*gnl_env)->next;
+	if (tmp == NULL || (*gnl_env)->fd == fd)
 	{
-		free_all_b(&(gnl_env->buffer));
-		free(gnl_env);
-		(gnl_env) = tmp;
+		if ((*gnl_env)->buffer)
+			free_all_b(&((*gnl_env)->buffer));
+		free((*gnl_env));
+		((*gnl_env)) = tmp;
 		return ;
 	}
-	record = gnl_env;
+	record = (*gnl_env);
 	while (record->next)
 	{
 		if (record->next->fd == fd)

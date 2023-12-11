@@ -10,14 +10,14 @@
 /*																			*/
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 # include <unistd.h>
 # include <stdlib.h>
 # include "./../ft_printf/ft_printf.h"
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 512
+#  define BUFFER_SIZE 1
 # endif
 
 // Chained list of text_blocks
@@ -45,16 +45,15 @@ typedef struct s_gnl_env
 	struct s_gnl_env	*next;
 }				t_gnl_env;
 
-
 // UTILS
-t_block	*init_block(void);
-void	free_all_b(t_block **text_block);
+t_block		*init_block(void);
+void		free_all_b(t_block **text_block);
 
 t_gnl_env	*init_gnl_env(const int fd);
-void	remove_fd(t_gnl_env *gnl_env, const int fd);
-void	content_move(t_block **block);
+void		remove_fd(t_gnl_env **gnl_env, const int fd);
+void		content_move(t_block **block);
 
 // GNL
-char	*get_next_line(const int fd);
+char		*get_next_line(const int fd);
 
 #endif
