@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/10 21:57:24 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/12 18:47:35 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,4 @@ t_block	*init_block(void)
 	block->last_pos = 0;
 	block->next = NULL;
 	return (block);
-}
-
-// Move block->buffer_content at the beginning of it
-// after a line was read
-//		Return :
-//			void
-void	content_move(t_block **block)
-{
-	int	index;
-
-	index = 0;
-	(*block)->last_pos = (*block)->last_pos + 1;
-	while (index < ((*block)->content_len - (*block)->last_pos)
-		&& (*block)->content[(*block)->last_pos + index] != '\0')
-	{
-		(*block)->content[index] = (*block)->content[(*block)->last_pos
-			+ index];
-		index++;
-	}
-	(*block)->content_len = index;
-	(*block)->last_pos = 0;
-	while ((*block)->last_pos < (*block)->content_len
-		&& (*block)->content[(*block)->last_pos] != '\n')
-		(*block)->last_pos = (*block)->last_pos + 1;
 }

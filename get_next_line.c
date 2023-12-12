@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/10 22:01:43 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/12 18:47:32 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,30 @@ static char	*make_line(ssize_t line_len, t_block *head)
 		buff_index--;
 	}
 	return (line);
+}
+
+// Move block->buffer_content at the beginning of it
+// after a line was read
+//		Return :
+//			void
+void	content_move(t_block **block)
+{
+	int	index;
+
+	index = 0;
+	(*block)->last_pos = (*block)->last_pos + 1;
+	while (index < ((*block)->content_len - (*block)->last_pos)
+		&& (*block)->content[(*block)->last_pos + index] != '\0')
+	{
+		(*block)->content[index] = (*block)->content[(*block)->last_pos
+			+ index];
+		index++;
+	}
+	(*block)->content_len = index;
+	(*block)->last_pos = 0;
+	while ((*block)->last_pos < (*block)->content_len
+		&& (*block)->content[(*block)->last_pos] != '\n')
+		(*block)->last_pos = (*block)->last_pos + 1;
 }
 
 // Read a line from fd

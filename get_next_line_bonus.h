@@ -37,19 +37,19 @@ typedef struct s_block
 //	fd 		: file descriptor 
 //	buffer	: Associated buffer
 //	next	: pointer to next fd_enironment
-typedef struct s_gnl_env
+typedef struct s_fd_env
 {
 	int					fd;
 	t_block				*buffer;
-	struct s_gnl_env	*next;
-}				t_gnl_env;
+	struct s_fd_env		*next;
+}				t_fd_env;
 
 // UTILS
 t_block		*init_block(void);
-void		free_all_b(t_block **text_block);
+void		free_buffer(t_block **text_block);
 
-t_gnl_env	*init_gnl_env(const int fd);
-void		remove_fd(t_gnl_env **gnl_env, const int fd);
+t_fd_env	*init_fd_env(const int fd);
+void		del_fd_env(t_fd_env **gnl_env, const int fd);
 void		content_move(t_block **block);
 
 // GNL

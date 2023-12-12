@@ -14,10 +14,9 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
-# include "./ft_printf/ft_printf.h"
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 512
 # endif
 
 // Chained list of text_blocks
@@ -35,7 +34,6 @@ typedef struct s_block
 
 // UTILS
 t_block	*init_block(void);
-void	content_move(t_block **block);
 void	free_all(t_block **text_block);
 
 // GNL

@@ -6,14 +6,14 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/11 21:47:40 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/12 18:51:01 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
 // Free_all the block and content from text_block to end of it
-void	free_all_b(t_block **text_block)
+void	free_buffer(t_block **text_block)
 {
 	t_block	*tmp;
 
@@ -29,16 +29,16 @@ void	free_all_b(t_block **text_block)
 }
 
 // Free and remove the associated fd_env if found
-void	remove_fd(t_gnl_env **gnl_env, const int fd)
+void	del_fd_env(t_fd_env **gnl_env, const int fd)
 {
-	t_gnl_env	*record;
-	t_gnl_env	*tmp;
+	t_fd_env	*record;
+	t_fd_env	*tmp;
 
 	tmp = (*gnl_env)->next;
 	if (tmp == NULL || (*gnl_env)->fd == fd)
 	{
 		if ((*gnl_env)->buffer)
-			free_all_b(&((*gnl_env)->buffer));
+			free_buffer(&((*gnl_env)->buffer));
 		free((*gnl_env));
 		((*gnl_env)) = tmp;
 		return ;
@@ -49,7 +49,7 @@ void	remove_fd(t_gnl_env **gnl_env, const int fd)
 		if (record->next->fd == fd)
 		{
 			tmp = record->next->next;
-			free_all_b(&(record->next->buffer));
+			free_buffer(&(record->next->buffer));
 			free(record->next);
 			record->next = tmp;
 			return ;
@@ -82,13 +82,13 @@ t_block	*init_block(void)
 
 // Init gnl_env with associated fd and allocated buffer
 //	Return :
-//		t_gnl_env * : Empty gnl_env
+//		t_fd_env * : Empty gnl_env
 //		NULL		: error
-t_gnl_env	*init_gnl_env(const int fd)
+t_fd_env	*init_fd_env(const int fd)
 {
-	t_gnl_env	*gnl_env;
+	t_fd_env	*gnl_env;
 
-	gnl_env = (t_gnl_env *)malloc(sizeof(t_gnl_env));
+	gnl_env = (t_fd_env *)malloc(sizeof(t_fd_env));
 	if (!gnl_env)
 		return (NULL);
 	gnl_env->buffer = init_block();

@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:53:28 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/11 20:40:33 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/12 23:58:01 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ char	*get_next_line_fd(const int fd, t_block **head)
 	content_move(head);
 	if ((*head)->content_len > 0)
 	{
-		free_all_b(&((*head)->next));
+		free_buffer(&((*head)->next));
 		(*head)->next = NULL;
 	}
 	return (line);
@@ -139,8 +139,8 @@ char	*get_next_line_fd(const int fd, t_block **head)
 //
 char	*get_next_line(const int fd)
 {
-	static t_gnl_env	*gnl_env;
-	t_gnl_env			*record;
+	static t_fd_env		*gnl_env;
+	t_fd_env			*record;
 	char				*line;
 
 	if (fd == -1 || BUFFER_SIZE == 0)
@@ -150,7 +150,7 @@ char	*get_next_line(const int fd)
 		record = record->next;
 	if (!record)
 	{
-		record = init_gnl_env(fd);
+		record = init_fd_env(fd);
 		if (!record)
 			return (NULL);
 		record->next = gnl_env;
@@ -158,6 +158,6 @@ char	*get_next_line(const int fd)
 	}
 	line = get_next_line_fd(record->fd, &(record->buffer));
 	if (!line || gnl_env->buffer->content_len == 0)
-		remove_fd(&gnl_env, fd);
+		del_fd_env(&gnl_env, fd);
 	return (line);
 }
