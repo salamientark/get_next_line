@@ -14,9 +14,10 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
+# include "./ft_printf/ft_printf.h"
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE 1
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10000000
 # endif
 
 // Chained list of text_blocks
@@ -37,6 +38,7 @@ t_block	*init_block(void);
 int		get_char_pos(const char *str, int c);
 int		get_end_of_line(const char *str);
 void	content_move(t_block **block);
+ssize_t	end_of_line(const char *str, const ssize_t size);
 void	free_all(t_block **text_block);
 
 // GNL
