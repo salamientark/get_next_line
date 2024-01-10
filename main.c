@@ -1,5 +1,5 @@
-#include "get_next_line_bonus.h"
-// #include "get_next_line.h"
+// #include "get_next_line_bonus.h"
+#include "get_next_line.h"
 #include "testing.h"
 #include <sys/types.h>
 #include <sys/stat.h>
