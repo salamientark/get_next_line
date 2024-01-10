@@ -41,6 +41,6 @@ int main()
         line = get_next_line(fd);
     }
     close(fd);
-    ft_printf("\n\nBUFF_SIZE = %d\n", BUFF_SIZE);
+    ft_printf("\n\nBUFFER_SIZE = %d\n", BUFFER_SIZE);
     return (0);
 }

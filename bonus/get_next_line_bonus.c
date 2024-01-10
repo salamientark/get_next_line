@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:35:55 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/05 22:49:04 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:01:45 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 // Read one text_block and put the result into block->content
 //	Return :
-//		[0;BUFF_SIZE[	: number of char read from file
+//		[0;BUFFER_SIZE[	: number of char read from file
 //			-1			: ERROR
 static int	read_block(const int fd, t_block **block)
 {
@@ -24,7 +24,7 @@ static int	read_block(const int fd, t_block **block)
 	if (!(*block))
 		(*block) = init_block();
 	content_len = read(fd, (*block)->content + (*block)->content_len,
-			BUFF_SIZE - (*block)->content_len) + (*block)->content_len;
+			BUFFER_SIZE - (*block)->content_len) + (*block)->content_len;
 	if (content_len == -1)
 		return (-1);
 	(*block)->content_len = content_len;
@@ -49,7 +49,7 @@ static int	read_line(const int fd, t_block **head)
 	line_len += read_block(fd, head);
 	if (line_len == -1)
 		return (-1);
-	while ((*head)->last_pos == -1 && (*head)->content_len == BUFF_SIZE)
+	while ((*head)->last_pos == -1 && (*head)->content_len == BUFFER_SIZE)
 	{
 		tmp_block = init_block();
 		line_len += read_block(fd, &tmp_block);
@@ -74,7 +74,7 @@ static char	*make_line(int line_len, t_block *head)
 	if (head->content_len == 0)
 	{
 		head = head->next;
-		head->last_pos = BUFF_SIZE - 1;
+		head->last_pos = BUFFER_SIZE - 1;
 	}
 	line[line_len] = '\0';
 	buff_index = head->last_pos;
@@ -84,7 +84,7 @@ static char	*make_line(int line_len, t_block *head)
 		if (buff_index == 0 && line_len > 0)
 		{
 			head = head->next;
-			buff_index = BUFF_SIZE;
+			buff_index = BUFFER_SIZE;
 		}
 		buff_index--;
 	}
@@ -102,7 +102,7 @@ char	*get_next_line(const int fd)
 	int				    line_len;
 	char			    *line;
 
-	if (fd < 0 || BUFF_SIZE == 0)
+	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
 	if (!gnl_env)
 		gnl_env = init_gnl_env(NULL, fd);
@@ -116,7 +116,7 @@ char	*get_next_line(const int fd)
 		return (remove_gnl_env(fd, &gnl_env), NULL);
 	line = make_line(line_len, tmp_gnl_env->head);
 	if (!line || tmp_gnl_env->head->content_len == 0 
-		|| tmp_gnl_env->head->last_pos == (BUFF_SIZE - 1))
+		|| tmp_gnl_env->head->last_pos == (BUFFER_SIZE - 1))
 		remove_gnl_env(fd, &gnl_env);
 	else
 	{

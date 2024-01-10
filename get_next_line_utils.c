@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:38:04 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/11/30 18:31:55 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/09 21:16:42 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,61 +34,45 @@ void	free_all(t_block **text_block)
 t_block	*init_block(void)
 {
 	t_block	*block;
-	int		index;
 
 	block = (t_block *)malloc(sizeof(struct s_block));
 	if (!block)
 		return (NULL);
-	block->content = (char *)malloc(sizeof(char) * BUFF_SIZE);
+	block->content = (char *)malloc(sizeof(char) * BUFFER_SIZE);
 	if (!block->content)
 	{
 		free(block);
 		return (NULL);
 	}
-	index = 0;
-	while (index < BUFF_SIZE)
-		block->content[index++] = '\0';
 	block->content_len = 0;
 	block->last_pos = 0;
 	block->next = NULL;
 	return (block);
 }
 
-int	get_char_pos(const char *str, int c)
+// Maybe could be removed
+// Check if EOL or EOF are in blocks
+// Differ from the content len in the way that 
+// next line could be in the same block
+//	Return :
+//	 0 < int < BUFF_SIZE	: end_of_line || end_of_file found
+//	 BUFFER_SIZE			: line is longer
+ssize_t	end_of_line(const char *str, const ssize_t size)
 {
-	int	index;
+	ssize_t	index;
 
 	index = 0;
-	while (index < BUFF_SIZE)
+	while (index < size)
 	{
-		if (!str[index] || str[index] == c)
+		if (str[index] == '\n')
 			return (index);
 		index++;
 	}
-	return (-1);
+	return (index);
 }
 
-// Check if str contain \n or if str is last line
-//	Return :
-//	 -1	 : Neither EOF or \n found
-//	int	 : pos of \n
-int	get_end_of_line(const char *str)
-{
-	int	index;
-
-	index = 0;
-	while (index < BUFF_SIZE && str[index] != '\0')
-	{
-		if (str[index] == '\n')
-			return (index + 1);
-		index++;
-	}
-	return (-1);
-}
-
-// Move part of the list content at the begining of it
-//	 filling the rest with \0
-//	Same as memmove then memeset \0 for the end of content
+// Move block->buffer_content at the beginning of it
+// after a line was read
 //		Return :
 //			void
 void	content_move(t_block **block)
@@ -96,7 +80,8 @@ void	content_move(t_block **block)
 	int	index;
 
 	index = 0;
-	while (index < (BUFF_SIZE - (*block)->last_pos)
+	(*block)->last_pos = (*block)->last_pos + 1;
+	while (index < ((*block)->content_len - (*block)->last_pos)
 		&& (*block)->content[(*block)->last_pos + index] != '\0')
 	{
 		(*block)->content[index] = (*block)->content[(*block)->last_pos
@@ -104,7 +89,8 @@ void	content_move(t_block **block)
 		index++;
 	}
 	(*block)->content_len = index;
-	while (index < BUFF_SIZE)
-		(*block)->content[index++] = '\0';
-	(*block)->last_pos = get_char_pos((*block)->content, '\n');
+	(*block)->last_pos = 0;
+	while ((*block)->last_pos < (*block)->content_len
+		&& (*block)->content[(*block)->last_pos] != '\n')
+		(*block)->last_pos = (*block)->last_pos + 1;
 }

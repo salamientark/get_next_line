@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:48:10 by dbaladro          #+#    #+#             */
-/*   Updated: 2023/12/05 22:50:07 by dbaladro         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:01:45 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ t_block	*init_block(void)
 	block = (t_block *)malloc(sizeof(struct s_block));
 	if (!block)
 		return (NULL);
-	block->content = (char *)malloc(sizeof(char) * BUFF_SIZE);
+	block->content = (char *)malloc(sizeof(char) * BUFFER_SIZE);
 	if (!block->content)
 	{
 		free(block);
 		return (NULL);
 	}
 	index = 0;
-	while (index < BUFF_SIZE)
+	while (index < BUFFER_SIZE)
 		block->content[index++] = '\0';
 	block->content_len = 0;
 	block->last_pos = 0;
@@ -100,7 +100,7 @@ int	get_char_pos(const char *str, int c)
 	int	index;
 
 	index = 0;
-	while (index < BUFF_SIZE)
+	while (index < BUFFER_SIZE)
 	{
 		if (!str[index] || str[index] == c)
 			return (index);
@@ -119,7 +119,7 @@ void	content_move(t_block **block)
 	int	index;
 
 	index = 0;
-	while (index < (BUFF_SIZE - (*block)->last_pos)
+	while (index < (BUFFER_SIZE - (*block)->last_pos)
 		&& (*block)->content[(*block)->last_pos + index] != '\0')
 	{
 		(*block)->content[index] = (*block)->content[(*block)->last_pos
@@ -127,7 +127,7 @@ void	content_move(t_block **block)
 		index++;
 	}
 	(*block)->content_len = index;
-	while (index < BUFF_SIZE)
+	while (index < BUFFER_SIZE)
 		(*block)->content[index++] = '\0';
 	(*block)->last_pos = get_char_pos((*block)->content, '\n');
 }
