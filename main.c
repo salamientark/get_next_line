@@ -6,30 +6,69 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-int main()
+int *make_fd_tab(int ac, char **av)
 {
-    int fd = open("test/basic_1", O_RDONLY);
-    // int fd = open("test/basic_2", O_RDONLY);
-    // int fd = open("test/basic_3", O_RDONLY);
-    // int fd = open("test/basic_4", O_RDONLY);
-    // int fd = open("test/basic_5", O_RDONLY);
-    // int fd = open("test/basic_6", O_RDONLY);
-    // int fd = open("test/basic_7", O_RDONLY);
-    // int fd = open("test/basic_8", O_RDONLY);
-    // int fd = open("test/basic_9", O_RDONLY);
-    // int fd = open("test/basic_10", O_RDONLY);
-    // int fd = open("test/nohup.out", O_RDONLY);
-    // int fd = open("test/hey/41_with_nl", O_RDONLY);
-    // int fd = open("test/hey/nl", O_RDONLY);
-    char *line = get_next_line(fd);
-    while (line)
+    int *fd_tab;
+    int index;
+
+    fd_tab = (int *)malloc(sizeof(int) * (ac - 1));
+    if (!fd_tab)
+        return (NULL);
+    index = 0;
+    while (index < (ac - 1))
     {
-        ft_printf("%s", line);
-        free(line);
-        line = get_next_line(fd);
+        fd_tab[index] = open(av[index + 1], O_RDONLY);
+        index++;
     }
-    close(fd);
-    ft_printf("\n\nBUFF_SIZE = %d\n", BUFF_SIZE);
+    return (fd_tab);
+}
+
+void    get_one_line_all_fd(int *fd_tab, int size)
+{
+    int     index;
+    char    *line;
+
+    index < 0;
+    while (index < size)
+    {
+        line = get_next_line(fd_tab[index]);
+        if (line)
+        {
+            printf("%s|", line);
+            free(line);
+        }
+        index++;
+    }
+}
+
+void    close_all(int *fd_tab, int size)
+{
+    int index;
+
+    index = 0;
+    while (index < size)
+    {
+        close(fd_tab[index]);
+        index++;
+    }
+}
+
+int main(int ac, char **av)
+{
+    int *fd_tab;
+    int size;
+
+    fd_tab = make_fd_tab(ac, av);
+    if (!fd_tab)
+    {
+        printf("fd_tab : malloc error\n");
+        return (0);
+    }
+    size = ac - 1;
+    get_one_line_all_fd(fd_tab, size);
+    close_all(fd_tab, size);
+    free(fd_tab);
     return (0);
 }
