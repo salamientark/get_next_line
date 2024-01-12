@@ -6,10 +6,9 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:33:50 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/11 10:56:46 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:27:31 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
@@ -23,7 +22,7 @@
 // Chained list of text_blocks
 //  content	 : text_content
 //  content_len : length of the content
-//  last_pos	: \n pos or EOF pos if as one
+//  last_pos	: \n pos or EOF pos
 //  next		: pointer to next block
 typedef struct s_block
 {
@@ -36,23 +35,18 @@ typedef struct s_block
 // gnl env containing a t_block for each fd
 typedef struct s_gnl_env
 {
-    int                 fd;
-    t_block             *head;
-    struct s_gnl_env    *next;
-}               t_gnl_env;
-
-
+	int					fd;
+	t_block				*head;
+	struct s_gnl_env	*next;
+}				t_gnl_env;
 
 // UTILS
 t_gnl_env	*init_gnl_env(t_gnl_env *gnl_env_head, const int fd);
-void	remove_gnl_env(const int fd, t_gnl_env **gnl_env);
-t_block	*init_block(void);
-int		get_char_pos(const char *str, int c);
-int		get_end_of_line(const char *str);
-void	content_move(t_block **block);
-void	free_all(t_block **text_block);
+void		remove_gnl_env(const int fd, t_gnl_env **gnl_env);
+t_block		*init_block(void);
+void		free_all(t_block **text_block);
 
 // GNL
-char	*get_next_line(const int fd);
+char		*get_next_line(const int fd);
 
 #endif

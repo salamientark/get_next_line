@@ -6,14 +6,13 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:35:55 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/12 14:35:28 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:21:55 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "get_next_line_bonus.h"
 
-// Read one text_block and put the result into block->content
+// Read one text_block and update block param
 //	Return :
 //		[0;BUFFER_SIZE[	: number of char read from file
 //			-1			: ERROR
@@ -30,7 +29,7 @@ static ssize_t	read_block(const int fd, t_block **block)
 		return (-1);
 	(*block)->content_len = content_len;
 	block_len = 0;
-	while (block_len < content_len	&& (*block)->content[block_len] != '\n')
+	while (block_len < content_len && (*block)->content[block_len] != '\n')
 		block_len++;
 	if (block_len == BUFFER_SIZE)
 		(*block)->last_pos = -1;
@@ -41,41 +40,6 @@ static ssize_t	read_block(const int fd, t_block **block)
 	if ((*block)->last_pos >= 0)
 		return ((*block)->last_pos + 1);
 	return (content_len);
-
-
-	/*
-	(*block)->last_pos = get_char_pos((*block)->content, '\n');
-	if ((*block)->content[(*block)->last_pos] == '\n')
-		return ((*block)->last_pos + 1);
-	if ((*block)->last_pos > 0)
-		return ((*block)->last_pos);
-	return (content_len);
-	*/
-}
-
-// Read one line from file and make a chained list of blocks from it
-//	Return :
-//		[0;∞[	: number of char in line
-//		-1		: ERROR
-static ssize_t	read_line(const int fd, t_block **head)
-{
-	t_block		*tmp_block;
-	ssize_t		line_len;
-
-	line_len = 0;
-	// if (*head && (*head)->content)
-	// 	content_move(head);
-	line_len += read_block(fd, head);
-	if (line_len == -1)
-		return (-1);
-	while ((*head)->last_pos == -1 && (*head)->content_len == BUFFER_SIZE)
-	{
-		tmp_block = init_block();
-		line_len += read_block(fd, &tmp_block);
-		tmp_block->next = *head;
-		*head = tmp_block;
-	}
-	return (line_len);
 }
 
 // Make a (char *)line from 'head' text_block list of length 'line_len'
@@ -84,11 +48,9 @@ static ssize_t	read_line(const int fd, t_block **head)
 //		NULL		: ERROR or no line to make
 static char	*make_line(ssize_t line_len, t_block *head)
 {
-	char	*line;
+	char		*line;
 	ssize_t		buff_index;
 
-	if (line_len <= 0)
-		return (NULL);
 	line = (char *)malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
@@ -112,6 +74,53 @@ static char	*make_line(ssize_t line_len, t_block *head)
 	return (line);
 }
 
+// Read one line from file
+//	Return :
+//		[0;∞[	: number of char in line
+//		-1		: ERROR
+static char	*read_line(const int fd, t_block **head)
+{
+	t_block		*tmp_block;
+	ssize_t		line_len;
+
+	line_len = 0;
+	line_len += read_block(fd, head);
+	if (line_len == -1)
+		return (NULL);
+	while ((*head)->last_pos == -1 && (*head)->content_len == BUFFER_SIZE)
+	{
+		tmp_block = init_block();
+		line_len += read_block(fd, &tmp_block);
+		tmp_block->next = *head;
+		*head = tmp_block;
+	}
+	if (line_len <= 0)
+		return (NULL);
+	return (make_line(line_len, (*head)));
+}
+
+// Move after \n content at the begining of buffer
+// and update t_block param
+static void	content_move(t_block **block)
+{
+	int	index;
+
+	index = 0;
+	(*block)->last_pos = (*block)->last_pos + 1;
+	while (index < ((*block)->content_len - (*block)->last_pos)
+		&& (*block)->content[(*block)->last_pos + index] != '\0')
+	{
+		(*block)->content[index] = (*block)->content[(*block)->last_pos
+			+ index];
+		index++;
+	}
+	(*block)->content_len = index;
+	(*block)->last_pos = 0;
+	while ((*block)->last_pos < (*block)->content_len - 1
+		&& (*block)->content[(*block)->last_pos] != '\n')
+		(*block)->last_pos = (*block)->last_pos + 1;
+}
+
 // Read a line from fd
 //	Return :
 //		char *  : New_line
@@ -120,10 +129,9 @@ char	*get_next_line(const int fd)
 {
 	static t_gnl_env	*gnl_env;
 	t_gnl_env			*tmp_gnl_env;
-	ssize_t				line_len;
-	char			    *line;
+	char				*line;
 
-	if (fd < 0 || BUFFER_SIZE == 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!gnl_env)
 		gnl_env = init_gnl_env(NULL, fd);
@@ -132,17 +140,12 @@ char	*get_next_line(const int fd)
 		tmp_gnl_env = tmp_gnl_env->next;
 	if (!tmp_gnl_env)
 		tmp_gnl_env = init_gnl_env(gnl_env, fd);
-	line_len = read_line(fd, &(tmp_gnl_env->head));
-	line = make_line(line_len, tmp_gnl_env->head);
+	line = read_line(fd, &(tmp_gnl_env->head));
 	content_move(&(tmp_gnl_env->head));
-	if (!line || tmp_gnl_env->head->content_len == 0 
+	if (!line || tmp_gnl_env->head->content_len == 0
 		|| tmp_gnl_env->head->last_pos == (BUFFER_SIZE - 1))
-		remove_gnl_env(fd, &gnl_env);
-	else
-	{
-		free_all(&(tmp_gnl_env->head->next));
-		tmp_gnl_env->head->next = NULL;
-		// content_move(&(tmp_gnl_env->head));
-	}
+		return (remove_gnl_env(fd, &gnl_env), line);
+	free_all(&(tmp_gnl_env->head->next));
+	tmp_gnl_env->head->next = NULL;
 	return (line);
 }

@@ -6,12 +6,11 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:48:10 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/12 14:35:47 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:22:10 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
 
 // Init a new gnl_env
 t_gnl_env	*init_gnl_env(t_gnl_env *gnl_env_head, const int fd)
@@ -31,7 +30,7 @@ t_gnl_env	*init_gnl_env(t_gnl_env *gnl_env_head, const int fd)
 	while (record->next)
 		record = record->next;
 	record->next = new_gnl_env;
-	return (gnl_env_head);
+	return (new_gnl_env);
 }
 
 // Remove from gnl_env
@@ -40,7 +39,6 @@ void	remove_gnl_env(const int fd, t_gnl_env **gnl_env)
 	t_gnl_env	*gnl_env_pos;
 	t_gnl_env	*tmp_gnl_env;
 
-	gnl_env_pos = *gnl_env;
 	if ((*gnl_env)->fd == fd)
 	{
 		free_all(&((*gnl_env)->head));
@@ -119,45 +117,3 @@ int	get_char_pos(const char *str, int c)
 	}
 	return (-1);
 }
-
-// Move part of the list content at the begining of it
-//	 filling the rest with \0
-//	Same as memmove then memeset \0 for the end of content
-//		Return :
-//			void
-void	content_move(t_block **block)
-{
-	int	index;
-
-	index = 0;
-	(*block)->last_pos = (*block)->last_pos + 1;
-	while (index < ((*block)->content_len - (*block)->last_pos)
-		&& (*block)->content[(*block)->last_pos + index] != '\0')
-	{
-		(*block)->content[index] = (*block)->content[(*block)->last_pos
-			+ index];
-		index++;
-	}
-	(*block)->content_len = index;
-	(*block)->last_pos = 0;
-	while ((*block)->last_pos < (*block)->content_len - 1
-		&& (*block)->content[(*block)->last_pos] != '\n')
-		(*block)->last_pos = (*block)->last_pos + 1;
-}
-// void	content_move(t_block **block)
-// {
-// 	int	index;
-
-// 	index = 0;
-// 	while (index < (BUFFER_SIZE - (*block)->last_pos)
-// 		&& (*block)->content[(*block)->last_pos + index] != '\0')
-// 	{
-// 		(*block)->content[index] = (*block)->content[(*block)->last_pos
-// 			+ index];
-// 		index++;
-// 	}
-// 	(*block)->content_len = index;
-// 	while (index < BUFFER_SIZE)
-// 		(*block)->content[index++] = '\0';
-// 	(*block)->last_pos = get_char_pos((*block)->content, '\n');
-// }
