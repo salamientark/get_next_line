@@ -107,47 +107,45 @@ void    get_line(int fd)
 
 int main(int ac, char **av)
 {
-    int *fd_tab;
-    int size;
+    (void) ac;
+    int fd;
+    char *line;
 
-    fd_tab = make_fd_tab(ac, av);
-    if (!fd_tab)
+    fd = open(av[1], O_RDONLY);
+    line = get_next_line(fd);
+    while (line)
     {
-        printf("fd_tab : malloc error\n");
-        return (0);
+        printf("%s|", line);
+        free(line);
+        line = get_next_line(fd);
     }
-    size = ac - 1;
+    close(fd);
+
+    // int *fd_tab;
+    // int size;
     // read_all_file_line_by_line(fd_tab, size);
     // read_all_file(fd_tab, size);
-    get_line(1000);
-    get_line(fd_tab[0]);
-    get_line(1001);
-    get_line(fd_tab[1]);
-    get_line(1002);
-    get_line(fd_tab[2]);
-    get_line(1003);
-    get_line(fd_tab[0]);
-    get_line(1004);
-    get_line(fd_tab[1]);
-    get_line(1005);
-    get_line(fd_tab[2]);
-    get_line(fd_tab[0]);
-    get_line(fd_tab[1]);
-    get_line(fd_tab[2]);
-    get_line(1006);
-    get_line(fd_tab[3]);
-    get_line(1007);
-    get_line(fd_tab[3]);
+    // get_line(1000);
+    // get_line(fd_tab[0]);
+    // get_line(1001);
+    // get_line(fd_tab[1]);
+    // get_line(1002);
+    // get_line(fd_tab[2]);
+    // get_line(1003);
+    // get_line(fd_tab[0]);
+    // get_line(1004);
+    // get_line(fd_tab[1]);
+    // get_line(1005);
+    // get_line(fd_tab[2]);
+    // get_line(fd_tab[0]);
+    // get_line(fd_tab[1]);
+    // get_line(fd_tab[2]);
+    // get_line(1006);
+    // get_line(fd_tab[3]);
+    // get_line(1007);
+    // get_line(fd_tab[3]);
+    // close_all(fd_tab, size);
+    // free(fd_tab);
 
-
-
-
-
-
-    
-    
-    
-    close_all(fd_tab, size);
-    free(fd_tab);
     return (0);
 }

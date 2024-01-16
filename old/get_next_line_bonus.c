@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:35:55 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/16 17:23:00 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:21:55 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static ssize_t	read_block(const int fd, t_block **block)
 
 	if (!(*block))
 		(*block) = init_block();
-	content_len = read(fd, (*block)->content, BUFFER_SIZE);
+	content_len = read(fd, (*block)->content + (*block)->content_len,
+			BUFFER_SIZE - (*block)->content_len) + (*block)->content_len;
 	if (content_len == -1)
 		return (-1);
 	(*block)->content_len = content_len;
@@ -56,7 +57,7 @@ static char	*make_line(ssize_t line_len, t_block *head)
 	if (head->content_len == 0)
 	{
 		head = head->next;
-		head->last_pos = head->content_len - 1;
+		head->last_pos = BUFFER_SIZE - 1;
 	}
 	line[line_len] = '\0';
 	buff_index = head->last_pos;
@@ -66,7 +67,7 @@ static char	*make_line(ssize_t line_len, t_block *head)
 		if (buff_index == 0 && line_len > 0)
 		{
 			head = head->next;
-			buff_index = head->content_len;
+			buff_index = BUFFER_SIZE;
 		}
 		buff_index--;
 	}
@@ -83,15 +84,10 @@ static char	*read_line(const int fd, t_block **head)
 	ssize_t		line_len;
 
 	line_len = 0;
-	if (*head && (*head)->content[(*head)->last_pos] == '\n')
-		return (make_line(line_len + (*head)->last_pos + 1, (*head)));
-	if (*head)
-		line_len += (*head)->content_len;
-	if (!(*head))
-		line_len += read_block(fd, head);
+	line_len += read_block(fd, head);
 	if (line_len == -1)
 		return (NULL);
-	while (((*head)->last_pos == -1 && (*head)->content_len == BUFFER_SIZE))
+	while ((*head)->last_pos == -1 && (*head)->content_len == BUFFER_SIZE)
 	{
 		tmp_block = init_block();
 		line_len += read_block(fd, &tmp_block);
