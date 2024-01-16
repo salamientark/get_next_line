@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:35:55 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/16 19:49:46 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/16 19:59:53 by madlab           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static char	*make_line(ssize_t line_len, t_block *head)
 static char	*read_line(const int fd, t_block **head)
 {
 	ssize_t	line_len;
+	ssize_t	read_result;
 
 	line_len = 0;
 	if (*head && (*head)->content[(*head)->last_pos] == '\n')
@@ -118,7 +119,12 @@ static char	*read_line(const int fd, t_block **head)
 	if (line_len <= 0)
 		return (NULL);
 	while (((*head)->last_pos == -1 && (*head)->content_len == BUFFER_SIZE))
-		line_len += read_block(fd, head);
+	{
+		read_result = read_block(fd, head);
+		if (read_result == -1)
+			return (NULL);
+		line_len += read_result;
+	}
 	if (line_len <= 0)
 		return (NULL);
 	return (make_line(line_len, (*head)));
@@ -143,6 +149,8 @@ char	*get_next_line(const int fd)
 		tmp_gnl_env = tmp_gnl_env->next;
 	if (!tmp_gnl_env)
 		tmp_gnl_env = init_gnl_env(gnl_env, fd);
+	if (!tmp_gnl_env)
+		return (NULL);
 	line = read_line(fd, &(tmp_gnl_env->head));
 	content_move(&(tmp_gnl_env->head));
 	if (!line || tmp_gnl_env->head->content_len == 0
