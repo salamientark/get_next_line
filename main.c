@@ -112,7 +112,7 @@ int main(int ac, char **av)
     char *line;
 
     fd = open(av[1], O_RDONLY);
-    fd = 1000;
+    // fd = 1000;
     line = get_next_line(fd);
     while (line)
     {
