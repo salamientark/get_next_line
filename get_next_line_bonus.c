@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:35:55 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/16 17:23:00 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:03:07 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,54 @@ static ssize_t	read_block(const int fd, t_block **block)
 {
 	ssize_t	content_len;
 	ssize_t	block_len;
-
-	if (!(*block))
-		(*block) = init_block();
-	content_len = read(fd, (*block)->content, BUFFER_SIZE);
-	if (content_len == -1)
+	t_block	*tmp;
+	// if (!(*block))
+	(tmp) = init_block();
+	if (!tmp)
 		return (-1);
-	(*block)->content_len = content_len;
+	content_len = read(fd, (tmp)->content, BUFFER_SIZE);
+	if (content_len == -1)
+		return (free_all(&tmp), -1);
+	(tmp)->content_len = content_len;
 	block_len = 0;
-	while (block_len < content_len && (*block)->content[block_len] != '\n')
+	while (block_len < content_len && (tmp)->content[block_len] != '\n')
 		block_len++;
 	if (block_len == BUFFER_SIZE)
-		(*block)->last_pos = -1;
+		(tmp)->last_pos = -1;
 	else if (block_len == content_len)
-		(*block)->last_pos = block_len - 1;
+		(tmp)->last_pos = block_len - 1;
 	else
-		(*block)->last_pos = block_len;
-	if ((*block)->last_pos >= 0)
-		return ((*block)->last_pos + 1);
+		(tmp)->last_pos = block_len;
+	tmp->next = *block;
+	*block = tmp;
+	if ((tmp)->last_pos >= 0)
+		return ((tmp)->last_pos + 1);
 	return (content_len);
+}
+
+
+// Move after \n content at the begining of buffer
+// and update t_block param
+static void	content_move(t_block **block)
+{
+	int	index;
+
+	if (!(*block))
+		return ;
+	index = 0;
+	(*block)->last_pos = (*block)->last_pos + 1;
+	while (index < ((*block)->content_len - (*block)->last_pos)
+		&& (*block)->content[(*block)->last_pos + index] != '\0')
+	{
+		(*block)->content[index] = (*block)->content[(*block)->last_pos
+			+ index];
+		index++;
+	}
+	(*block)->content_len = index;
+	(*block)->last_pos = 0;
+	while ((*block)->last_pos < (*block)->content_len - 1
+		&& (*block)->content[(*block)->last_pos] != '\n')
+		(*block)->last_pos = (*block)->last_pos + 1;
 }
 
 // Make a (char *)line from 'head' text_block list of length 'line_len'
@@ -79,7 +108,7 @@ static char	*make_line(ssize_t line_len, t_block *head)
 //		-1		: ERROR
 static char	*read_line(const int fd, t_block **head)
 {
-	t_block		*tmp_block;
+	// t_block		*tmp_block;
 	ssize_t		line_len;
 
 	line_len = 0;
@@ -87,42 +116,20 @@ static char	*read_line(const int fd, t_block **head)
 		return (make_line(line_len + (*head)->last_pos + 1, (*head)));
 	if (*head)
 		line_len += (*head)->content_len;
-	if (!(*head))
-		line_len += read_block(fd, head);
-	if (line_len == -1)
+	// if (!(*head))
+	line_len += read_block(fd, head);
+	if (line_len <= 0)
 		return (NULL);
 	while (((*head)->last_pos == -1 && (*head)->content_len == BUFFER_SIZE))
 	{
-		tmp_block = init_block();
-		line_len += read_block(fd, &tmp_block);
-		tmp_block->next = *head;
-		*head = tmp_block;
+		// tmp_block = init_block();
+		line_len += read_block(fd, head);
+		// tmp_block->next = *head;
+		// *head = tmp_block;
 	}
 	if (line_len <= 0)
 		return (NULL);
 	return (make_line(line_len, (*head)));
-}
-
-// Move after \n content at the begining of buffer
-// and update t_block param
-static void	content_move(t_block **block)
-{
-	int	index;
-
-	index = 0;
-	(*block)->last_pos = (*block)->last_pos + 1;
-	while (index < ((*block)->content_len - (*block)->last_pos)
-		&& (*block)->content[(*block)->last_pos + index] != '\0')
-	{
-		(*block)->content[index] = (*block)->content[(*block)->last_pos
-			+ index];
-		index++;
-	}
-	(*block)->content_len = index;
-	(*block)->last_pos = 0;
-	while ((*block)->last_pos < (*block)->content_len - 1
-		&& (*block)->content[(*block)->last_pos] != '\n')
-		(*block)->last_pos = (*block)->last_pos + 1;
 }
 
 // Read a line from fd
