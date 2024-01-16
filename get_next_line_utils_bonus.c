@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:48:10 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/12 16:22:10 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/16 20:09:10 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,4 @@ t_block	*init_block(void)
 	block->last_pos = 0;
 	block->next = NULL;
 	return (block);
-}
-
-int	get_char_pos(const char *str, int c)
-{
-	int	index;
-
-	index = 0;
-	while (index < BUFFER_SIZE)
-	{
-		if (!str[index] || str[index] == c)
-			return (index);
-		index++;
-	}
-	return (-1);
 }

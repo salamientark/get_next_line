@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: dbaladro <dbaladro@student.42.fr>		  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/11/27 22:01:47 by dbaladro		  #+#	#+#			 */
-/*   Updated: 2023/11/27 22:03:26 by madlab           ###   ########.fr       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/02 15:33:50 by dbaladro          #+#    #+#             */
+/*   Updated: 2024/01/16 20:10:17 by madlab           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
@@ -22,7 +22,7 @@
 // Chained list of text_blocks
 //  content	 : text_content
 //  content_len : length of the content
-//  last_pos	: \n pos or EOF pos if as one
+//  last_pos	: \n pos or EOF pos
 //  next		: pointer to next block
 typedef struct s_block
 {
@@ -33,14 +33,10 @@ typedef struct s_block
 }				t_block;
 
 // UTILS
-t_block	*init_block(void);
-int		get_char_pos(const char *str, int c);
-int		get_end_of_line(const char *str);
-void	content_move(t_block **block);
-ssize_t	end_of_line(const char *str, const ssize_t size);
-void	free_all(t_block **text_block);
+t_block		*init_block(void);
+void		free_all(t_block **text_block);
 
 // GNL
-char	*get_next_line(const int fd);
+char		*get_next_line(const int fd);
 
 #endif
