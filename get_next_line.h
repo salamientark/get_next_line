@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:33:50 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/16 20:10:17 by madlab           ###   ########.fr       */
+/*   Updated: 2024/01/23 14:40:37 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_block
 {
 	char			*content;
 	int				content_len;
+	int				first_pos;
 	int				last_pos;
 	struct s_block	*next;
 }				t_block;

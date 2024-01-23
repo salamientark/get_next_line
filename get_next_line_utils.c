@@ -6,7 +6,7 @@
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:48:10 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/16 20:08:59 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:44:11 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_block	*init_block(void)
 		block->content[index++] = '\0';
 	block->content_len = 0;
 	block->last_pos = 0;
+	block->first_pos = 0;
 	block->next = NULL;
 	return (block);
 }
