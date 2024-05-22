@@ -1,5 +1,0 @@
-PROBLEMS:
-	Don't work with BUFFER_SIZE =  0
-	Don't work with BUFFER_SIZE > 50 (memory error)
-	Trouble compiling with and without -D flag
-

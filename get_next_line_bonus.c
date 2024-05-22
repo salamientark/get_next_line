@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbaladro <dbaladro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:35:55 by dbaladro          #+#    #+#             */
-/*   Updated: 2024/01/23 16:51:36 by dbaladro         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:38:56 by dbaladro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 // Read one text_block and update block param
 //	Return :
@@ -128,16 +128,26 @@ static char	*read_line(const int fd, t_block **head)
 //		NULL	: Error or No more line
 char	*get_next_line(const int fd)
 {
-	static t_block	*head;
-	char			*line;
+	static t_gnl_env	*gnl_env;
+	t_gnl_env			*tmp_gnl_env;
+	char				*line;
 
 	if (fd < 0)
 		return (NULL);
-	line = read_line(fd, &head);
-	content_move(&head);
-	if (!line || head->first_pos > head->last_pos)
-		return (free_all(&head), line);
-	free_all(&(head->next));
-	head->next = NULL;
+	if (!gnl_env)
+		gnl_env = init_gnl_env(NULL, fd);
+	tmp_gnl_env = gnl_env;
+	while (tmp_gnl_env && tmp_gnl_env->fd != fd)
+		tmp_gnl_env = tmp_gnl_env->next;
+	if (!tmp_gnl_env)
+		tmp_gnl_env = init_gnl_env(gnl_env, fd);
+	if (!tmp_gnl_env)
+		return (NULL);
+	line = read_line(fd, &(tmp_gnl_env->head));
+	content_move(&(tmp_gnl_env->head));
+	if (!line || tmp_gnl_env->head->first_pos > tmp_gnl_env->head->last_pos)
+		return (remove_gnl_env(fd, &gnl_env), line);
+	free_all(&(tmp_gnl_env->head->next));
+	tmp_gnl_env->head->next = NULL;
 	return (line);
 }
